@@ -3,8 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-
-User =get_user_model()
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,8 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "is_active",
         ]
-
-
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
