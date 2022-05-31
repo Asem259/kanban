@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from pickle import TRUE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-wqk8rs=8aow7ufr7%d3f52915x$)y#ag!_qwro(2@tt96@q66y"
+SECRET_KEY =os.environ.get('SECRET_KEY',"django-insecure-wqkf52915x$)y#ag!_qwro(2@tt96@q66y") 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =os.environ.get('DEBUG',True)
 
 ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOST')]
 
 
 # Application definition
@@ -41,7 +45,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
 ]
 
@@ -90,12 +93,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "trello",
-        "USER": "trello",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get('POSTGRES_DB'),
+        "USER": os.environ.get('POSTGRES_USER'),
+        "PASSWORD": os.environ.get('POSTGRES_PASSWORD'),
+        "HOST": os.environ.get('POSTGRES_HOST'),
+        "PORT":os.environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -139,6 +142,8 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# DEFAULT_AUTO_FIELD = "django.db.models.uu"
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+AUTH_USER_MODEL = "users.User"
