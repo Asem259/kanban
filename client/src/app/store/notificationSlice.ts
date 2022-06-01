@@ -24,7 +24,6 @@ export const notificationSlice = createSlice({
         state.msg = 'Login Successful';
       })
       .addMatcher(api.endpoints.login.matchRejected, (state, action) => {
-        console.log(action);
         state.isActive = true;
         state.type = 'error';
         state.msg = (action.payload as any).data.detail || 'Error Try later';
@@ -36,7 +35,6 @@ export const notificationSlice = createSlice({
         state.msg = 'Your account has been successfully created';
       })
       .addMatcher(api.endpoints.register.matchRejected, (state, action) => {
-        console.log(action);
         state.isActive = true;
         state.type = 'error';
         state.msg = (action.payload as any).data.email[0] || 'Error Try later';

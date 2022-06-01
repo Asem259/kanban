@@ -9,7 +9,7 @@ const refreshToken = localStorage.getItem('refreshToken') || '';
 const initialState: UserState = {
   accessToken: accessToken,
   refreshToken: refreshToken,
-  isAuthenticated: false,
+  isAuthenticated: Boolean(accessToken),
 };
 
 export const userSlice = createSlice({

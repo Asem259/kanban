@@ -30,7 +30,7 @@ export const PasswordField = ({ handleChange, password }: Props) => {
 
   return (
     <FormControl sx={{ my: 1 }} variant='outlined' fullWidth>
-      <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
+      <InputLabel htmlFor='outlined-adornment-password'>Password *</InputLabel>
       <OutlinedInput
         id='outlined-adornment-password'
         type={showPassword ? 'text' : 'password'}

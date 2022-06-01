@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -9,8 +9,7 @@ import Button from '@mui/material/Button';
 import { useLoginMutation, useRegisterMutation } from '../app/services/api';
 import { Typography, Divider, Link } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import { PasswordField } from '../components/PasswordField';
-
+import { PasswordField } from '../components';
 import { Credentials } from '../types/index.ts';
 import { loginContainerStyle, BoxContainer } from '../app/styles/styles';
 
@@ -57,6 +56,13 @@ export const Login = ({ page }: Props) => {
     }
   };
 
+  useEffect(() => {
+    setValues({
+      email: '',
+      password: '',
+    });
+  }, [page]);
+
   return (
     <Container maxWidth='sm' sx={loginContainerStyle}>
       <Paper
@@ -95,10 +101,11 @@ export const Login = ({ page }: Props) => {
             <FormControl sx={{ my: 1 }} variant='outlined' fullWidth>
               <TextField
                 id='email'
-                label='Email'
                 variant='outlined'
                 onChange={handleChange('email')}
                 required
+                label='Email'
+                value={values.email}
                 error={Boolean(error)}
                 helperText={error}
               />
