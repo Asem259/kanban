@@ -1,16 +1,17 @@
 import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Drawer from '@mui/material/Drawer';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+//icons
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
-import { AppDrawerStyle } from '../app/styles/styles';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { Backdrop } from '@mui/material';
+
+import { appDrawerStyle } from '../app/styles/styles';
 
 interface Props {
   openDrawer: boolean;
@@ -18,12 +19,14 @@ interface Props {
 }
 
 export const AppDrawer = ({ openDrawer, setOpenDrawer }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <Drawer
       anchor='left'
       open={openDrawer}
       onClose={(e) => setOpenDrawer(false)}
-      sx={AppDrawerStyle}
+      sx={appDrawerStyle}
       ModalProps={{
         hideBackdrop: true,
         onClick: (e) => {
@@ -32,7 +35,12 @@ export const AppDrawer = ({ openDrawer, setOpenDrawer }: Props) => {
       }}
     >
       <ListItem disablePadding divider>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            navigate('/profile');
+            setOpenDrawer(false);
+          }}
+        >
           <ListItemIcon>
             <AccountBoxIcon color='primary' />
           </ListItemIcon>

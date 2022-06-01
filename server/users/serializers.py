@@ -50,6 +50,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token["user_email"] = user.email
+        token["email"] = user.email
 
         return token

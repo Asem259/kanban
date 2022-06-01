@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
 import { api } from '../services/api';
 import { userSlice } from './userSlice';
 import { notificationSlice } from './notificationSlice';

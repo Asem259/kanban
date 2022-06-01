@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
@@ -11,7 +12,7 @@ import { Typography, Divider, Link } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { PasswordField } from '../components';
 import { Credentials } from '../types/index.ts';
-import { loginContainerStyle, BoxContainer } from '../app/styles/styles';
+import { loginContainerStyle, boxContainer } from '../app/styles/styles';
 
 interface Props {
   page: string;
@@ -131,7 +132,7 @@ export const Login = ({ page }: Props) => {
           </form>
         </Grid>
         <Divider />
-        <Box sx={BoxContainer} my={1}>
+        <Box sx={boxContainer} my={1}>
           <Link
             component={RouterLink}
             sx={{ margin: '16px auto 0 auto' }}

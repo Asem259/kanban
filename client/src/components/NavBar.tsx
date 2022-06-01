@@ -9,8 +9,7 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 
 import MenuIcon from '@mui/icons-material/Menu';
-import { BoxContainer, NavLogoStyle } from '../app/styles/styles';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { boxContainer, navLogoStyle } from '../app/styles/styles';
 import { AppDrawer } from './AppDrawer';
 
 export const NavBar = () => {
@@ -21,7 +20,7 @@ export const NavBar = () => {
       <AppBar position='static' elevation={0}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters variant='dense'>
-            <Box sx={{ ...BoxContainer }} mr={2}>
+            <Box sx={{ ...boxContainer }} mr={2}>
               <IconButton onClick={() => setOpenDrawer(true)}>
                 <MenuIcon sx={{ fontSize: '32px', color: '#fff' }} />
               </IconButton>
@@ -30,13 +29,13 @@ export const NavBar = () => {
                 setOpenDrawer={setOpenDrawer}
               />
             </Box>
-            <Box sx={BoxContainer}>
+            <Box sx={boxContainer}>
               <Typography
                 variant='h6'
                 noWrap
                 component={RouterLink}
                 to='/home'
-                sx={NavLogoStyle}
+                sx={navLogoStyle}
               >
                 Kanban
               </Typography>

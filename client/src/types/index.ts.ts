@@ -16,3 +16,14 @@ export interface User {
   last_login: string;
   date_joined: string;
 }
+
+export type UserShort = Pick<User, 'id' | 'email'>;
+
+export interface Board {
+  id: string;
+  title: string;
+  is_favorite: boolean;
+}
+
+export type Entity = 'Board' | 'Column' | 'Card';
+export type Mode = 'Create' | 'Edit' | '';

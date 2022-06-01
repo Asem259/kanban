@@ -4,8 +4,9 @@ import {
   BaseQueryFn,
   FetchArgs,
 } from '@reduxjs/toolkit/query/react';
+
 import { RootState } from '../store/store';
-import { Token, Credentials, User } from '../../types/index.ts';
+import { Token, Credentials, User, Board } from '../../types/index.ts';
 import { updateAccessToken, logout } from '../store/userSlice';
 
 const baseQuery = fetchBaseQuery({
@@ -51,7 +52,7 @@ const baseQueryWithReauth: BaseQueryFn<FetchArgs | string> = async (
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-
+  tagTypes: ['Boards'],
   endpoints: (builder) => ({
     // auth endPoints
 
@@ -70,9 +71,42 @@ export const api = createApi({
         body: data,
       }),
     }),
+
+    // users End Point
+
+    updateUser: builder.mutation<User, Partial<User>>({
+      query: (data: Partial<User>) => {
+        const { id, ...body } = data;
+        return {
+          url: `accounts/${id}/`,
+          method: 'Put',
+          body,
+        };
+      },
+    }),
+
+    // boards Endpoints:
+    boards: builder.query<Board[], void>({
+      query: () => `boards/`,
+      providesTags: (result, error, arg) =>
+        result
+          ? [
+              ...result.map((board) => ({
+                type: 'Boards' as const,
+                id: board.id,
+              })),
+              { type: 'Boards', id: 'B_LIST' },
+            ]
+          : [{ type: 'Boards', id: 'B_LIST' }],
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegisterMutation } = api;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useUpdateUserMutation,
+  useBoardsQuery,
+} = api;

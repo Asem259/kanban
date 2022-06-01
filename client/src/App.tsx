@@ -3,7 +3,7 @@ import { Routes, Route, Link, Navigate, RouteProps } from 'react-router-dom';
 
 import { useAppSelector } from './app/store/store';
 
-import { Login } from './pages/Login';
+import { Boards, Login, Profile } from './pages';
 import { Notification, NavBar } from './components';
 
 interface PrivatePros {
@@ -26,6 +26,8 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login page='login' />} />
         <Route path='/register' element={<Login page='register' />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/Boards' element={<Boards />} />
       </Routes>
     </>
   );
