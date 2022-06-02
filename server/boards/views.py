@@ -1,3 +1,18 @@
-from django.shortcuts import render
+import uuid
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import Board
+from .serializers import (
+    BoardSerializer,
+    BoardFullSerializer,
+)
+
+
+class BoardViewSet(viewsets.ModelViewSet):
+    queryset = Board.objects.all()
+    lookup_field = "id"
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return BoardFullSerializer
+        return BoardSerializer

@@ -1,7 +1,6 @@
 import { theme } from './theme';
 
 export const loginContainerStyle = {
-  //   height: '100vh',
   padding: '24px 16px',
   justifyContent: 'flex-start',
   alignItems: 'center',
@@ -55,9 +54,10 @@ export const boardTileStyle = {
   [theme.breakpoints.down('md')]: {
     height: '100px',
   },
-  backgroundColor: theme.palette.secondary.light,
+  backgroundColor: theme.palette.primary.light,
   borderRadius: theme.shape.borderRadius,
 };
+
 export const addNewBoardStyle = {
   ...addNewItem,
   ...boardTileStyle,

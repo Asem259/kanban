@@ -10,7 +10,7 @@ type NewItemProps = {
 };
 
 export const AddNewItem = (props: NewItemProps) => {
-  const { onAdd, entity } = props;
+  const { entity } = props;
 
   const addItemStyle =
     entity === 'Board' ? addNewBoardStyle : addNewColumnStyle;
@@ -21,7 +21,7 @@ export const AddNewItem = (props: NewItemProps) => {
   };
 
   return (
-    <Button sx={addItemStyle} onClick={handleClick}>
+    <Button disableRipple sx={addItemStyle} onClick={handleClick}>
       {buttonText}
     </Button>
   );

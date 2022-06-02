@@ -16,10 +16,11 @@ interface Props {
 
 export const BoardTile = ({ id, title, is_favorite }: Props) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   return (
     <Box sx={{ ...boardTileStyle }}>
       <ActionsMenuButton setShowMenu={setOpenDialog} />
-      <FavoriteButton is_favorite={is_favorite} />
+      <FavoriteButton is_favorite={is_favorite} id={id} />
 
       <Typography
         sx={{ ...boardTileLinkStyle }}

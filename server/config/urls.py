@@ -18,12 +18,14 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from users.urls import users_router, urlpatterns
+from boards.urls import boards_router
 
 
 router = DefaultRouter()
 
 
 router.registry.extend(users_router.registry)
+router.registry.extend(boards_router.registry)
 
 
 urlpatterns = [

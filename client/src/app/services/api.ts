@@ -6,7 +6,13 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import { RootState } from '../store/store';
-import { Token, Credentials, User, Board } from '../../types/index.ts';
+import {
+  Token,
+  Credentials,
+  User,
+  Board,
+  FullBoard,
+} from '../../types/index.ts';
 import { updateAccessToken, logout } from '../store/userSlice';
 
 const baseQuery = fetchBaseQuery({
@@ -52,7 +58,7 @@ const baseQueryWithReauth: BaseQueryFn<FetchArgs | string> = async (
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Boards'],
+  tagTypes: ['Boards', 'Columns'],
   endpoints: (builder) => ({
     // auth endPoints
 
@@ -86,7 +92,7 @@ export const api = createApi({
     }),
 
     // boards Endpoints:
-    boards: builder.query<Board[], void>({
+    getBoards: builder.query<Board[], void>({
       query: () => `boards/`,
       providesTags: (result, error, arg) =>
         result
@@ -99,6 +105,27 @@ export const api = createApi({
             ]
           : [{ type: 'Boards', id: 'B_LIST' }],
     }),
+    getFullBoard: builder.query<FullBoard, void>({
+      query: () => `boards/`,
+      providesTags: (result, error, arg) =>
+        result
+          ? [
+              ...result.columns.map((col) => ({
+                type: 'Columns' as const,
+                id: col.id,
+              })),
+              { type: 'Columns', id: 'C_LIST' },
+            ]
+          : [{ type: 'Columns', id: 'C_LIST' }],
+    }),
+    updateBoard: builder.mutation<Board, Partial<Board>>({
+      query: (data: Partial<Board>) => ({
+        url: `boards/${data.id}/`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Boards', id: arg.id }],
+    }),
   }),
 });
 
@@ -108,5 +135,7 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useUpdateUserMutation,
-  useBoardsQuery,
+  useGetBoardsQuery,
+  useGetFullBoardQuery,
+  useUpdateBoardMutation,
 } = api;

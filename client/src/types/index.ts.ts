@@ -19,10 +19,22 @@ export interface User {
 
 export type UserShort = Pick<User, 'id' | 'email'>;
 
+export interface Column {
+  id: string;
+  background: string;
+  title: string;
+  board: string;
+  order: number;
+}
+
 export interface Board {
   id: string;
   title: string;
   is_favorite: boolean;
+}
+
+export interface FullBoard extends Board {
+  columns: Column[];
 }
 
 export type Entity = 'Board' | 'Column' | 'Card';
