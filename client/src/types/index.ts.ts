@@ -38,4 +38,4 @@ export interface FullBoard extends Board {
 }
 
 export type Entity = 'Board' | 'Column' | 'Card';
-export type Mode = 'Create' | 'Edit' | '';
+export type Action = 'Create' | 'Edit' | 'Delete' | '';

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 
-import { api } from '../services/api';
+import { apiSlice } from '../services/api';
 import { Token, UserShort } from '../../types/index.ts';
 import { UserState } from '../../types/stateTypes';
 
@@ -29,8 +29,8 @@ const getStateFromLocalStorage = (): UserState => {
         isAuthenticated,
       };
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 
   return startState;
@@ -50,15 +50,18 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     0;
-    builder.addMatcher(api.endpoints.login.matchFulfilled, (state, action) => {
-      state.accessToken = action.payload.access;
-      state.refreshToken = action.payload.refresh;
-      state.isAuthenticated = true;
-      state.id = jwt_decode<UserShort>(action.payload.access)?.id;
-      state.email = jwt_decode<UserShort>(action.payload.access)?.email;
-      localStorage.setItem('accessToken', action.payload.access);
-      localStorage.setItem('refreshToken', action.payload.refresh);
-    });
+    builder.addMatcher(
+      apiSlice.endpoints.login.matchFulfilled,
+      (state, action) => {
+        state.accessToken = action.payload.access;
+        state.refreshToken = action.payload.refresh;
+        state.isAuthenticated = true;
+        state.id = jwt_decode<UserShort>(action.payload.access)?.id;
+        state.email = jwt_decode<UserShort>(action.payload.access)?.email;
+        localStorage.setItem('accessToken', action.payload.access);
+        localStorage.setItem('refreshToken', action.payload.refresh);
+      }
+    );
   },
 });
 

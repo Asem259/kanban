@@ -55,7 +55,7 @@ const baseQueryWithReauth: BaseQueryFn<FetchArgs | string> = async (
   }
   return result;
 };
-export const api = createApi({
+export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['Boards', 'Columns'],
@@ -90,52 +90,10 @@ export const api = createApi({
         };
       },
     }),
-
-    // boards Endpoints:
-    getBoards: builder.query<Board[], void>({
-      query: () => `boards/`,
-      providesTags: (result, error, arg) =>
-        result
-          ? [
-              ...result.map((board) => ({
-                type: 'Boards' as const,
-                id: board.id,
-              })),
-              { type: 'Boards', id: 'B_LIST' },
-            ]
-          : [{ type: 'Boards', id: 'B_LIST' }],
-    }),
-    getFullBoard: builder.query<FullBoard, void>({
-      query: () => `boards/`,
-      providesTags: (result, error, arg) =>
-        result
-          ? [
-              ...result.columns.map((col) => ({
-                type: 'Columns' as const,
-                id: col.id,
-              })),
-              { type: 'Columns', id: 'C_LIST' },
-            ]
-          : [{ type: 'Columns', id: 'C_LIST' }],
-    }),
-    updateBoard: builder.mutation<Board, Partial<Board>>({
-      query: (data: Partial<Board>) => ({
-        url: `boards/${data.id}/`,
-        method: 'PATCH',
-        body: data,
-      }),
-      invalidatesTags: (result, error, arg) => [{ type: 'Boards', id: arg.id }],
-    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {
-  useLoginMutation,
-  useRegisterMutation,
-  useUpdateUserMutation,
-  useGetBoardsQuery,
-  useGetFullBoardQuery,
-  useUpdateBoardMutation,
-} = api;
+export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation } =
+  apiSlice;

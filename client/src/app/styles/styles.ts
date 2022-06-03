@@ -30,7 +30,10 @@ export const appDrawerStyle = {
   },
 };
 
-export const buttonStyle = { borderRadius: theme.shape.borderRadius };
+export const buttonStyle = {
+  borderRadius: theme.shape.borderRadius,
+  textTransform: 'capitalize',
+};
 
 const addNewItem = {
   border: `2px dashed ${theme.palette.grey['400']}`,
@@ -54,7 +57,7 @@ export const boardTileStyle = {
   [theme.breakpoints.down('md')]: {
     height: '100px',
   },
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: '#616161',
   borderRadius: theme.shape.borderRadius,
 };
 
@@ -79,10 +82,57 @@ export const boardTileLinkStyle = {
 export const actionsMenuButtonStyle = {
   position: 'absolute',
   right: '8px',
+  zIndex: '100',
+  color: '#fff',
 };
 
 export const dialogRow = {
   display: 'flex',
   justifyContent: 'space-between',
-  alighnItems: 'center',
+  alignItems: 'center',
+};
+
+export const OptionsMenuStyle = {
+  '& .MuiPaper-root': {
+    borderRadius: theme.shape.borderRadius,
+    marginTop: theme.spacing(1),
+    minWidth: 240,
+    position: 'absolute',
+    top: 0,
+  },
+  '& .MuiMenu-list': {
+    padding: '12px 0',
+  },
+  '& .MuiMenuItem-root': {
+    py: '12px',
+    pl: '24px',
+    '& .MuiSvgIcon-root': {
+      fontSize: 18,
+      color: theme.palette.text.secondary,
+      marginRight: theme.spacing(3),
+    },
+  },
+};
+
+export const dialogPaperStyle = {
+  '& .MuiDialog-paper': {
+    borderRadius: theme.shape.borderRadius,
+    padding: '12px',
+  },
+};
+export const dialogCloseBtnStyle = {
+  position: 'absolute',
+  top: '0',
+  right: '0',
+  borderRadius: '100%',
+};
+export const dialogActionsContainerStyle = {
+  flexDirection: 'column',
+  display: 'flex',
+  gap: '6px',
+  width: '100%',
+};
+
+export const dialogTextField = {
+  backgroundColor: theme.palette.grey['200'],
 };

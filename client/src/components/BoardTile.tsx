@@ -5,30 +5,33 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { boardTileStyle, boardTileLinkStyle } from '../app/styles/styles';
-import { ActionsMenuButton } from './ActionsMenuButton';
+
 import { FavoriteButton } from './FavoriteButton';
+import { useAppSelector } from '../app/store/hooks';
+import { selectBoardById } from '../app/services/boardApi';
+import { DialogContainer } from './Dialogs/DialogContainer';
 
 interface Props {
   id: string;
-  title: string;
-  is_favorite: boolean;
 }
 
-export const BoardTile = ({ id, title, is_favorite }: Props) => {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+export const BoardTile = ({ id }: Props) => {
+  const board = useAppSelector((state) => selectBoardById(state, id));
 
   return (
-    <Box sx={{ ...boardTileStyle }}>
-      <ActionsMenuButton setShowMenu={setOpenDialog} />
-      <FavoriteButton is_favorite={is_favorite} id={id} />
+    <>
+      <DialogContainer entity='Board' id={id} title={board?.title || ''} />
+      <Box sx={{ ...boardTileStyle }}>
+        <FavoriteButton is_favorite={board?.is_favorite || false} id={id} />
 
-      <Typography
-        sx={{ ...boardTileLinkStyle }}
-        component={RouterLink}
-        to={'/' + id}
-      >
-        {title}
-      </Typography>
-    </Box>
+        <Typography
+          sx={{ ...boardTileLinkStyle }}
+          component={RouterLink}
+          to={'/' + id}
+        >
+          {board?.title}
+        </Typography>
+      </Box>
+    </>
   );
 };

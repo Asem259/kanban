@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
@@ -9,19 +9,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface Props {
-  handleChange: (
-    p: 'password'
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (p: 'password') => (e: ChangeEvent<HTMLInputElement>) => void;
   password: string;
 }
 
 export const PasswordField = ({ handleChange, password }: Props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const handleMouseDownPassword = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
   };
 
   const handleClickShowPassword = () => {

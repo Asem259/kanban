@@ -3,8 +3,7 @@ import { forwardRef, useEffect } from 'react';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
-import { useAppDispatch } from '../app/store/store';
-import { useAppSelector } from '../app/store/store';
+import { useAppDispatch, useAppSelector } from '../app/store/hooks';
 import { resetNotifications } from '../app/store/notificationSlice';
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(

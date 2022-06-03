@@ -49,7 +49,12 @@ export const AppDrawer = ({ openDrawer, setOpenDrawer }: Props) => {
       </ListItem>
 
       <ListItem disablePadding divider>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            navigate('/boards');
+            setOpenDrawer(false);
+          }}
+        >
           <ListItemIcon>
             <ViewKanbanIcon color='primary' />
           </ListItemIcon>

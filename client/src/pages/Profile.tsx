@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import { useAppSelector } from '../app/store/store';
+import { useAppSelector } from '../app/store/hooks';
 import { buttonStyle } from '../app/styles/styles';
 import { useUpdateUserMutation } from '../app/services/api';
 
@@ -66,8 +66,12 @@ export const Profile = () => {
 
         <Grid item xs={12}>
           <Button
-            onClick={() =>
-              updateUser({ id, first_name: firstName, last_name: lastName })
+            onClick={async () =>
+              await updateUser({
+                id,
+                first_name: firstName,
+                last_name: lastName,
+              })
             }
             disableElevation
             size='large'

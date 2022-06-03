@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { api } from '../services/api';
+import { apiSlice } from '../services/api';
 import { NotificationState } from '../../types/stateTypes';
+import { boardApi } from '../services/boardApi';
 
 const initialState: NotificationState = {
   isActive: false,
@@ -18,38 +19,112 @@ export const notificationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Login
-      .addMatcher(api.endpoints.login.matchFulfilled, (state, action) => {
+      .addMatcher(apiSlice.endpoints.login.matchFulfilled, (state, action) => {
         state.isActive = true;
         state.type = 'success';
         state.msg = 'Login Successful';
       })
-      .addMatcher(api.endpoints.login.matchRejected, (state, action) => {
+      .addMatcher(apiSlice.endpoints.login.matchRejected, (state, action) => {
         state.isActive = true;
         state.type = 'error';
         state.msg = (action.payload as any).data.detail || 'Error Try later';
       })
       //register
-      .addMatcher(api.endpoints.register.matchFulfilled, (state, action) => {
-        state.isActive = true;
-        state.type = 'success';
-        state.msg = 'Your account has been successfully created';
-      })
-      .addMatcher(api.endpoints.register.matchRejected, (state, action) => {
-        state.isActive = true;
-        state.type = 'error';
-        state.msg = (action.payload as any).data.email[0] || 'Error Try later';
-      })
+      .addMatcher(
+        apiSlice.endpoints.register.matchFulfilled,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'success';
+          state.msg = 'Your account has been successfully created';
+        }
+      )
+      .addMatcher(
+        apiSlice.endpoints.register.matchRejected,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'error';
+          state.msg =
+            (action.payload as any).data.email[0] || 'Error Try later';
+        }
+      )
       // Update user
-      .addMatcher(api.endpoints.updateUser.matchFulfilled, (state, action) => {
-        state.isActive = true;
-        state.type = 'success';
-        state.msg = 'Your account has been successfully updated';
-      })
-      .addMatcher(api.endpoints.updateUser.matchRejected, (state, action) => {
-        state.isActive = true;
-        state.type = 'error';
-        state.msg = (action.payload as any).data.detail || 'Error Try later';
-      });
+      .addMatcher(
+        apiSlice.endpoints.updateUser.matchFulfilled,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'success';
+          state.msg = 'Your account has been successfully updated';
+        }
+      )
+      .addMatcher(
+        apiSlice.endpoints.updateUser.matchRejected,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'error';
+          state.msg = (action.payload as any).data.detail || 'Error Try later';
+        }
+      )
+
+      // update, delete , create Board Notification
+      .addMatcher(
+        boardApi.endpoints.updateBoard.matchFulfilled,
+        (state, action) => {
+          const args = action.meta.arg.originalArgs;
+
+          if (args.hasOwnProperty('title'))
+            state.msg = action.payload.title + ' has been successfully updated';
+          if (args.hasOwnProperty('is_favorite'))
+            state.msg = `Board ${
+              args.is_favorite ? 'added to' : 'removed from'
+            }  your favorites`;
+
+          state.isActive = true;
+          state.type = 'success';
+        }
+      )
+      .addMatcher(
+        boardApi.endpoints.updateBoard.matchRejected,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'error';
+          state.msg =
+            (action.payload as any).data.detail || 'Error Try again later';
+        }
+      )
+      .addMatcher(
+        boardApi.endpoints.deleteBoard.matchFulfilled,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'success';
+          state.msg = 'Board has been successfully deleted';
+        }
+      )
+      .addMatcher(
+        boardApi.endpoints.deleteBoard.matchRejected,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'error';
+          state.msg =
+            (action.payload as any).data.detail || 'Error Try again later';
+        }
+      )
+      .addMatcher(
+        boardApi.endpoints.createBoard.matchFulfilled,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'success';
+          state.msg = 'Board has been successfully created';
+        }
+      )
+      .addMatcher(
+        boardApi.endpoints.createBoard.matchRejected,
+        (state, action) => {
+          state.isActive = true;
+          state.type = 'error';
+          state.msg =
+            (action.payload as any).data.detail || 'Error Try again later';
+        }
+      );
   },
 });
 

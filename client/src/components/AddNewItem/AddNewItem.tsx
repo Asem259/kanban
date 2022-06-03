@@ -1,23 +1,25 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { Button } from '@mui/material';
 
 import { addNewBoardStyle, addNewColumnStyle } from '../../app/styles/styles';
-import { Entity } from '../../types/index.ts';
+import { Action, Entity } from '../../types/index.ts';
 
 type NewItemProps = {
-  onAdd(text: string): void;
+  setAction: Dispatch<SetStateAction<Action>>;
   dark?: boolean;
   entity: Entity;
 };
 
 export const AddNewItem = (props: NewItemProps) => {
-  const { entity } = props;
+  const { setAction, entity } = props;
 
   const addItemStyle =
     entity === 'Board' ? addNewBoardStyle : addNewColumnStyle;
   const buttonText = '+ Add New ' + entity;
 
   const handleClick = () => {
-    console.log('Open ' + entity + ' Dialog');
+    setAction('Create');
   };
 
   return (

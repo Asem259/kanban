@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { ChangeEvent, FormEventHandler, useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import FormControl from '@mui/material/FormControl';
@@ -33,11 +33,11 @@ export const Login = ({ page }: Props) => {
   const isLoginPage = page === 'login';
 
   const handleChange =
-    (prop: keyof Credentials) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (prop: keyof Credentials) => (e: ChangeEvent<HTMLInputElement>) => {
       setValues({ ...values, [prop]: e.target.value });
     };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email))

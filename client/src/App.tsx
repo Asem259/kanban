@@ -1,13 +1,13 @@
-import React from 'react';
+import { ComponentType } from 'react';
 import { Routes, Route, Link, Navigate, RouteProps } from 'react-router-dom';
 
-import { useAppSelector } from './app/store/store';
+import { useAppSelector } from './app/store/hooks';
 
 import { Boards, Login, Profile } from './pages';
 import { Notification, NavBar } from './components';
 
 interface PrivatePros {
-  Component: React.ComponentType;
+  Component: ComponentType;
 }
 
 const Private = ({ Component }: PrivatePros) => {

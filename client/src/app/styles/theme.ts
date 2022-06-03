@@ -23,7 +23,7 @@ declare module '@mui/material/styles' {
 
 export const theme = createTheme({
   palette: {
-    primary: { main: blue['800'] },
+    primary: { main: '#4267B2    ' },
     label: {
       indigo: indigo[500],
       pink: pink[500],
