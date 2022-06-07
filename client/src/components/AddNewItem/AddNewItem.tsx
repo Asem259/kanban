@@ -1,29 +1,38 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import { Button } from '@mui/material';
 
-import { addNewBoardStyle, addNewColumnStyle } from '../../app/styles/styles';
-import { Action, Entity } from '../../types/index.ts';
+import { addNewBoardStyle } from '../../app/styles/boardStyle';
+import { addNewCardStyle } from '../../app/styles/cardStyle';
+import { addNewColumnStyle } from '../../app/styles/columnStyle';
+import { Entity } from '../../types/index.ts';
+import { useAppDispatch } from '../../app/store/hooks';
+import { setAction } from '../../app/store/boardSlice';
 
-type NewItemProps = {
-  setAction: Dispatch<SetStateAction<Action>>;
-  dark?: boolean;
+interface Props {
   entity: Entity;
-};
+}
 
-export const AddNewItem = (props: NewItemProps) => {
-  const { setAction, entity } = props;
+export const AddNewItem = ({ entity }: Props) => {
+  const dispatch = useAppDispatch();
 
   const addItemStyle =
-    entity === 'Board' ? addNewBoardStyle : addNewColumnStyle;
+    entity === 'Board'
+      ? addNewBoardStyle
+      : entity === 'Column'
+      ? addNewColumnStyle
+      : addNewCardStyle;
+
   const buttonText = '+ Add New ' + entity;
 
   const handleClick = () => {
-    setAction('Create');
+    dispatch(setAction({ action: 'Create', entity }));
   };
 
   return (
-    <Button disableRipple sx={addItemStyle} onClick={handleClick}>
+    <Button
+      disableRipple
+      sx={(theme) => ({ ...addItemStyle })}
+      onClick={handleClick}
+    >
       {buttonText}
     </Button>
   );

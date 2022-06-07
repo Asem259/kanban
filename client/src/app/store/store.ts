@@ -3,11 +3,13 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { apiSlice } from '../services/api';
 import { userSlice } from './userSlice';
 import { notificationSlice } from './notificationSlice';
+import { boardSlice } from './boardSlice';
 
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
     notification: notificationSlice.reducer,
+    board: boardSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
 

@@ -1,28 +1,11 @@
-import { useState } from 'react';
-
-import { Action, Entity } from '../../types/index.ts';
 import { ActionDialog } from './ActionDialog';
-import { OptionsMenu } from './OptionsMenu';
+import { DeleteDialog } from './DeleteDialod';
 
-interface Props {
-  entity: Entity;
-  id: string;
-  title: string;
-}
-
-export const DialogContainer = ({ entity, id, title }: Props) => {
-  const [action, setAction] = useState<Action>('');
-
+export const DialogContainer = () => {
   return (
     <>
-      <OptionsMenu entity={entity} setAction={setAction} />
-      <ActionDialog
-        entity={entity}
-        setAction={setAction}
-        id={id}
-        title={title}
-        action={action}
-      />
+      <ActionDialog />
+      <DeleteDialog />
     </>
   );
 };

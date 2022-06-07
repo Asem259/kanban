@@ -19,8 +19,8 @@ export const boardApi = apiSlice.injectEndpoints({
             ]
           : [{ type: 'Boards', id: 'LIST' }],
     }),
-    getFullBoard: builder.query<FullBoard, void>({
-      query: () => `boards/`,
+    getFullBoard: builder.query<FullBoard, string>({
+      query: (id) => `boards/${id}/`,
       providesTags: (result, error, arg) =>
         result
           ? [
@@ -28,7 +28,12 @@ export const boardApi = apiSlice.injectEndpoints({
                 type: 'Columns' as const,
                 id: col.id,
               })),
+              ...result.labels.map((label) => ({
+                type: 'Labels' as const,
+                id: label.id,
+              })),
               { type: 'Columns', id: 'LIST' },
+              { type: 'Labels', id: 'LIST' },
             ]
           : [{ type: 'Columns', id: 'LIST' }],
     }),
@@ -47,7 +52,7 @@ export const boardApi = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: 'Boards', id: 'LIST' }],
     }),
     deleteBoard: builder.mutation<void, string>({
-      query: (id: string) => ({
+      query: (id) => ({
         url: `boards/${id}/`,
         method: 'DELETE',
       }),
@@ -68,7 +73,7 @@ const selectBoardsResult = boardApi.endpoints.getBoards.select();
 
 export const selectAllBoards = createSelector(
   selectBoardsResult,
-  (boardsResult) => boardsResult?.data ?? []
+  (boardsResult) => boardsResult.data ?? []
 );
 
 export const selectBoardById = createSelector(
@@ -76,3 +81,12 @@ export const selectBoardById = createSelector(
   (state: RootState, boardId: string) => boardId,
   (boards, boardId) => boards.find((board) => board.id === boardId)
 );
+
+const selectFullBoard = (id: string) =>
+  createSelector(
+    boardApi.endpoints.getFullBoard.select(id),
+    (result) => result.data
+  );
+
+export const selectLabels = (id: string) =>
+  createSelector(selectFullBoard(id), (data) => data?.labels);

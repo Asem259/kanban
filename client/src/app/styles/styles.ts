@@ -1,17 +1,17 @@
 import { theme } from './theme';
 
+export const boxContainer = {
+  justifyContent: 'center',
+  alignItems: 'center',
+  display: 'flex',
+};
+
 export const loginContainerStyle = {
   padding: '24px 16px',
   justifyContent: 'flex-start',
   alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-};
-
-export const boxContainer = {
-  justifyContent: 'center',
-  alignItems: 'center',
-  display: 'flex',
 };
 
 export const navLogoStyle = {
@@ -35,48 +35,9 @@ export const buttonStyle = {
   textTransform: 'capitalize',
 };
 
-const addNewItem = {
+export const addNewItem = {
   border: `2px dashed ${theme.palette.grey['400']}`,
-};
-
-export const addNewColumnStyle = { ...addNewItem };
-export const addNewCardStyle = { ...addNewItem };
-
-export const boardsContainer = {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'flex-start',
-  padding: '32px',
-  marginTop: '48px',
-};
-
-export const boardTileStyle = {
-  position: 'relative',
-  color: '#fff',
-  height: '150px',
-  [theme.breakpoints.down('md')]: {
-    height: '100px',
-  },
-  backgroundColor: '#616161',
-  borderRadius: theme.shape.borderRadius,
-};
-
-export const addNewBoardStyle = {
-  ...addNewItem,
-  ...boardTileStyle,
-  backgroundColor: theme.palette.grey['100'],
-  color: theme.palette.text.primary,
-  width: '100%',
-};
-
-export const boardTileLinkStyle = {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  color: 'inherit',
-  textDecoration: 'none',
+  color: theme.palette.grey['600'],
 };
 
 export const actionsMenuButtonStyle = {
@@ -85,6 +46,8 @@ export const actionsMenuButtonStyle = {
   zIndex: '100',
   color: '#fff',
 };
+
+//dialogs
 
 export const dialogRow = {
   display: 'flex',
@@ -132,7 +95,29 @@ export const dialogActionsContainerStyle = {
   gap: '6px',
   width: '100%',
 };
+export const dialogContentStyle = {
+  gap: '8px',
+  display: 'flex',
+  flexDirection: 'column',
+};
 
 export const dialogTextField = {
   backgroundColor: theme.palette.grey['200'],
+};
+
+export const colorsContainer = {
+  py: '8px',
+  mt: '12px',
+};
+
+export const colorButtonStyle = {
+  borderRadius: '50%',
+  width: '36px',
+  height: '36px',
+  cursor: 'pointer',
+  '&:hover': {
+    opacity: '0.8',
+  },
+  color: '#fff',
+  ...boxContainer,
 };

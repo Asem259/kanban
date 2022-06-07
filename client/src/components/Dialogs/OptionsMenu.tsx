@@ -14,18 +14,21 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Entity, Action } from '../../types/index.ts';
 import { OptionsMenuStyle } from '../../app/styles/styles';
 import { actionsMenuButtonStyle } from '../../app/styles/styles';
+import { useAppDispatch } from '../../app/store/hooks';
+import { setAction } from '../../app/store/boardSlice';
 
 interface Props {
-  setAction: Dispatch<SetStateAction<Action>>;
   entity: Entity;
+  id: string;
+  title: string;
 }
 
-export const OptionsMenu = ({ setAction, entity }: Props) => {
+export const OptionsMenu = ({ entity, id, title }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const handleClick = (action: Action) => () => {
-    console.log('##', action);
 
-    setAction(action);
+  const dispatch = useAppDispatch();
+  const handleClick = (action: Action) => () => {
+    dispatch(setAction({ action, id, title, entity }));
     setAnchorEl(null);
   };
 

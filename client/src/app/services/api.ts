@@ -6,13 +6,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import { RootState } from '../store/store';
-import {
-  Token,
-  Credentials,
-  User,
-  Board,
-  FullBoard,
-} from '../../types/index.ts';
+import { Token, Credentials, User } from '../../types/index.ts';
 import { updateAccessToken, logout } from '../store/userSlice';
 
 const baseQuery = fetchBaseQuery({
@@ -58,7 +52,7 @@ const baseQueryWithReauth: BaseQueryFn<FetchArgs | string> = async (
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Boards', 'Columns'],
+  tagTypes: ['Boards', 'Columns', 'Cards', 'Labels'],
   endpoints: (builder) => ({
     // auth endPoints
 

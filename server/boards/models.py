@@ -51,10 +51,6 @@ class Card(models.Model):
     class Meta:
         ordering = ["order"]
 
-    @property
-    def tasks_count(self):
-        return self.task_set.count()
-
     def __str__(self):
         return self.title
 

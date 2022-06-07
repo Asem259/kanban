@@ -1,124 +1,125 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
 
 import {
-  useDeleteBoardMutation,
   useUpdateBoardMutation,
   useCreateBoardMutation,
 } from '../../app/services/boardApi';
-import { Action, Entity } from '../../types/index.ts';
+
 import {
   buttonStyle,
   dialogCloseBtnStyle,
   dialogPaperStyle,
   dialogActionsContainerStyle,
   dialogTextField,
+  dialogContentStyle,
 } from '../../app/styles/styles';
+import { ColorBox } from '../ColorBox';
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
+import {
+  selectColumnById,
+  useAddColumnMutation,
+  useUpdateColumnMutation,
+} from '../../app/services/columnApi';
+import { selectAction, setAction } from '../../app/store/boardSlice';
 
-interface Props {
-  id?: string;
-  title?: string;
-  action: Action;
-  setAction: Dispatch<SetStateAction<Action>>;
-  entity: Entity;
-}
+export const ActionDialog = () => {
+  const [newTitle, setNewTitle] = useState<string | undefined>();
+  const [columnColor, setColumnColor] = useState<string>('');
 
-export const ActionDialog = ({
-  action,
-  setAction,
-  title,
-  id,
-  entity,
-}: Props) => {
-  const [newTitle, setNewTitle] = useState<string>(title || '');
+  const dispatch = useAppDispatch();
+  const { action, id, title, entity } = useAppSelector(selectAction);
+
+  const currentBoard = useAppSelector((state) => state.board.currentBoard);
+  const background = useAppSelector(selectColumnById(id))?.background;
 
   const [createBoard] = useCreateBoardMutation();
   const [updateBoard] = useUpdateBoardMutation();
-  const [deleteBoard] = useDeleteBoardMutation();
 
-  const isDeleteAction = action === 'Delete';
+  const [updateColumn] = useUpdateColumnMutation();
+  const [addColumn] = useAddColumnMutation();
+
+  if (entity === 'Column') {
+    useEffect(() => {
+      if (background) setColumnColor(background);
+    }, [background]);
+  }
+  useEffect(() => {
+    if (title && title !== newTitle) setNewTitle(title);
+  }, [title]);
 
   const handleClick = async () => {
-    if (action === 'Edit') await updateBoard({ id, title: newTitle });
-
-    if (action === 'Create') await createBoard({ title: newTitle });
-
-    if (action === 'Delete' && id) await deleteBoard(id);
-
-    setAction('');
+    if (entity === 'Column') {
+      if (action === 'Edit')
+        await updateColumn({
+          id,
+          title: newTitle,
+          background: columnColor,
+        });
+      if (action === 'Create')
+        await addColumn({
+          title: newTitle,
+          background: columnColor,
+          board: currentBoard,
+        });
+    }
+    if (entity === 'Board') {
+      if (action === 'Edit') await updateBoard({ id, title: newTitle });
+      if (action === 'Create') await createBoard({ title: newTitle });
+    }
+    dispatch(setAction(null));
   };
 
-  const deleteContent = (
-    <DialogContentText>Are you sure to delete {title}?</DialogContentText>
-  );
-
-  const content = (
-    <TextField
-      autoFocus
-      margin='dense'
-      id='name'
-      type='text'
-      placeholder='Enter New Title'
-      fullWidth
-      variant='outlined'
-      value={newTitle}
-      onChange={(e) => setNewTitle(e.target.value)}
-      sx={(theme) => dialogTextField}
-    />
-  );
-  {
-    entity === 'Column' && <Divider sx={{ py: 1 }} />;
-  }
-
   const handleClose = () => {
-    setAction('');
+    dispatch(setAction(null));
+    if (entity === 'Column' && background) setColumnColor(background);
   };
 
   return (
     <Dialog
-      open={Boolean(action)}
+      open={action === 'Create' || action === 'Edit'}
+      closeAfterTransition
       onClose={handleClose}
       fullWidth
-      maxWidth={isDeleteAction ? 'xs' : 'sm'}
+      maxWidth='sm'
       sx={(theme) => dialogPaperStyle}
     >
-      <Box sx={{ position: 'relative' }}>
-        <DialogTitle fontWeight={700}>{action}</DialogTitle>
+      <DialogTitle sx={{ position: 'relative' }} fontWeight={700}>
+        {action === 'Create' ? 'Create New ' + entity : 'Edit'}
         <IconButton sx={(theme) => dialogCloseBtnStyle} onClick={handleClose}>
           <CloseIcon fontSize='small' />
         </IconButton>
-      </Box>
+      </DialogTitle>
 
-      <DialogContent>{isDeleteAction ? deleteContent : content}</DialogContent>
+      <DialogContent sx={{ ...dialogContentStyle }}>
+        <TextField
+          autoFocus
+          margin='dense'
+          id='name'
+          type='text'
+          placeholder='Enter New Title'
+          fullWidth
+          variant='outlined'
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          sx={(theme) => dialogTextField}
+        />
+        {entity === 'Column' && (
+          <ColorBox setColor={setColumnColor} color={columnColor} />
+        )}
+      </DialogContent>
+
       <DialogActions>
         <Box sx={dialogActionsContainerStyle}>
-          {isDeleteAction && (
-            <Button
-              fullWidth
-              disableElevation
-              disableRipple
-              onClick={handleClose}
-              size='medium'
-              sx={(theme) => ({
-                backgroundColor: theme.palette.grey['200'],
-                ...buttonStyle,
-              })}
-            >
-              Cancel
-            </Button>
-          )}
-
           <Button
             sx={buttonStyle}
             disableElevation

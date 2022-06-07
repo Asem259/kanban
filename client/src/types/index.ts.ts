@@ -19,12 +19,35 @@ export interface User {
 
 export type UserShort = Pick<User, 'id' | 'email'>;
 
+export interface Label {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export interface Task {
+  id: string;
+  description: string;
+  completed: boolean;
+}
+
+export interface Card {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  labels: Label[];
+  tasks: Task[];
+  column: string;
+}
+
 export interface Column {
   id: string;
   background: string;
   title: string;
   board: string;
   order: number;
+  cards: string[];
 }
 
 export interface Board {
@@ -35,7 +58,8 @@ export interface Board {
 
 export interface FullBoard extends Board {
   columns: Column[];
+  labels: Label[];
 }
 
 export type Entity = 'Board' | 'Column' | 'Card';
-export type Action = 'Create' | 'Edit' | 'Delete' | '';
+export type Action = 'Create' | 'Edit' | 'Delete' | null;
