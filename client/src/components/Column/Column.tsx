@@ -1,16 +1,17 @@
 import Box from '@mui/material/Box';
 
 import { ColumnHeader } from './ColumnHeader';
-import { useGetColumnQuery } from '../../app/services/columnApi';
 import { columnContainer } from '../../app/styles/columnStyle';
 import { Card } from '../Card/Card';
-import { AddNewItem } from '../AddNewItem/AddNewItem';
-
+import { AddNewItem } from '../AddNewItem';
+import { useAppSelector } from '../../app/store/hooks';
+import { selectColumnById } from '../../app/services/boardApi';
 interface Props {
   id: string;
 }
 export const Column = ({ id }: Props) => {
-  const { data, isSuccess, isError, isLoading } = useGetColumnQuery(id);
+  const boardId = useAppSelector((state) => state.board.currentBoard);
+  const data = useAppSelector(selectColumnById(boardId, id));
 
   return (
     <Box sx={columnContainer}>
@@ -23,7 +24,7 @@ export const Column = ({ id }: Props) => {
         <Card key={cardId} id={cardId} />
       ))}
 
-      <AddNewItem entity='Card' />
+      <AddNewItem entity='Card' columnId={id} />
     </Box>
   );
 };

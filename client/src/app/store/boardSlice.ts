@@ -25,7 +25,6 @@ export const boardSlice = createSlice({
   initialState,
   reducers: {
     setCurrentBoard: (state, action) => {
-      console.log(action);
       state.currentBoard = action.payload;
       localStorage.setItem('currentBoard', action.payload);
     },
@@ -51,3 +50,7 @@ export const selectAction = createSelector(
 );
 
 export const { setCurrentBoard, setAction } = boardSlice.actions;
+export const selectCurrentBoard = createSelector(
+  (state: RootState) => state.board,
+  (board) => board.currentBoard
+);

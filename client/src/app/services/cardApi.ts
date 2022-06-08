@@ -1,5 +1,6 @@
 import { apiSlice } from './api';
 import { Card as CardType } from '../../types/index.ts';
+import { createSelector } from '@reduxjs/toolkit';
 
 export const cardApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -35,3 +36,6 @@ export const {
   useDeleteCardMutation,
   useUpdateCardMutation,
 } = cardApi;
+
+export const selectCardById = (id: string) =>
+  createSelector(cardApi.endpoints.getCard.select(id), (card) => card.data);

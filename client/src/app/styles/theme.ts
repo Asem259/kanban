@@ -22,11 +22,19 @@ declare module '@mui/material/styles' {
 }
 
 export const theme = createTheme({
+  shape: {
+    borderRadius: 2,
+  },
   palette: {
-    primary: { main: '#4267B2    ' },
+    primary: { main: '#4267B2' },
     label: {
       indigo: indigo[500],
       pink: pink[500],
+    },
+  },
+  typography: {
+    button: {
+      textTransform: 'none',
     },
   },
 });

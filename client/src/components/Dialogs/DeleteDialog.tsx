@@ -12,11 +12,11 @@ import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
 import { selectAction, setAction } from '../../app/store/boardSlice';
 import { useDeleteBoardMutation } from '../../app/services/boardApi';
 import {
-  buttonStyle,
   dialogCloseBtnStyle,
   dialogPaperStyle,
   dialogActionsContainerStyle,
-} from '../../app/styles/styles';
+} from '../../app/styles/dialogStyle';
+import { buttonStyle } from '../../app/styles/styles';
 import { useDeleteColumnMutation } from '../../app/services/columnApi';
 
 export const DeleteDialog = () => {
@@ -47,7 +47,7 @@ export const DeleteDialog = () => {
       sx={(theme) => dialogPaperStyle}
     >
       <DialogTitle sx={{ position: 'relative' }} fontWeight={700}>
-        'Delete'
+        Delete {title}
         <IconButton sx={(theme) => dialogCloseBtnStyle} onClick={handleClose}>
           <CloseIcon fontSize='small' />
         </IconButton>

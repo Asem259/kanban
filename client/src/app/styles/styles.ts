@@ -47,14 +47,6 @@ export const actionsMenuButtonStyle = {
   color: '#fff',
 };
 
-//dialogs
-
-export const dialogRow = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-};
-
 export const OptionsMenuStyle = {
   '& .MuiPaper-root': {
     borderRadius: theme.shape.borderRadius,
@@ -77,37 +69,13 @@ export const OptionsMenuStyle = {
   },
 };
 
-export const dialogPaperStyle = {
-  '& .MuiDialog-paper': {
-    borderRadius: theme.shape.borderRadius,
-    padding: '12px',
-  },
-};
-export const dialogCloseBtnStyle = {
-  position: 'absolute',
-  top: '0',
-  right: '0',
-  borderRadius: '100%',
-};
-export const dialogActionsContainerStyle = {
-  flexDirection: 'column',
-  display: 'flex',
-  gap: '6px',
-  width: '100%',
-};
-export const dialogContentStyle = {
-  gap: '8px',
-  display: 'flex',
-  flexDirection: 'column',
-};
-
-export const dialogTextField = {
-  backgroundColor: theme.palette.grey['200'],
-};
-
 export const colorsContainer = {
   py: '8px',
   mt: '12px',
+  flexWrap: 'wrap',
+  gap: '8px',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
 };
 
 export const colorButtonStyle = {

@@ -35,7 +35,10 @@ export const boardApi = apiSlice.injectEndpoints({
               { type: 'Columns', id: 'LIST' },
               { type: 'Labels', id: 'LIST' },
             ]
-          : [{ type: 'Columns', id: 'LIST' }],
+          : [
+              { type: 'Columns', id: 'LIST' },
+              { type: 'Labels', id: 'LIST' },
+            ],
     }),
     updateBoard: builder.mutation<Board, Partial<Board>>({
       query: (data: Partial<Board>) => ({
@@ -88,5 +91,18 @@ const selectFullBoard = (id: string) =>
     (result) => result.data
   );
 
+export const selectColumns = (id: string) =>
+  createSelector(selectFullBoard(id), (data) => data?.columns);
+
+export const selectColumnById = (boardId: string, colId: string) =>
+  createSelector(selectColumns(boardId), (columns) =>
+    columns?.find((col) => col.id === colId)
+  );
+
 export const selectLabels = (id: string) =>
   createSelector(selectFullBoard(id), (data) => data?.labels);
+
+export const selectLabelById = (boardId: string, labelId: string) =>
+  createSelector(selectLabels(boardId), (labels) =>
+    labels?.find((label) => label.id === labelId)
+  );

@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import { useLoginMutation, useRegisterMutation } from '../app/services/api';
 import { Typography, Divider, Link } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import { PasswordField } from '../components';
+import { PasswordField } from '../components/PasswordField';
 import { Credentials } from '../types/index.ts';
 import { loginContainerStyle, boxContainer } from '../app/styles/styles';
 

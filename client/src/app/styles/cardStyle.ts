@@ -41,3 +41,14 @@ export const addNewCardStyle = {
   height: '120px',
   marginTop: '12px',
 };
+
+export const labelMenuItem = {
+  width: '300px',
+  py: '0px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '4px',
+  mb: '8px',
+  height: '36px',
+};

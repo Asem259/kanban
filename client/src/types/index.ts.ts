@@ -61,5 +61,5 @@ export interface FullBoard extends Board {
   labels: Label[];
 }
 
-export type Entity = 'Board' | 'Column' | 'Card';
+export type Entity = 'Board' | 'Column' | 'Card' | 'Label';
 export type Action = 'Create' | 'Edit' | 'Delete' | null;

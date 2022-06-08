@@ -1,7 +1,7 @@
-import { createSelector } from '@reduxjs/toolkit';
-
 import { apiSlice } from './api';
 import { Column as ColumnType } from '../../types/index.ts';
+import { boardApi } from './boardApi';
+import { boardSlice } from '../store/boardSlice';
 
 export const columnApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,15 +17,29 @@ export const columnApi = apiSlice.injectEndpoints({
         { type: 'Columns', id: 'LIST' },
       ],
     }),
-    updateColumn: builder.mutation<ColumnType, Partial<ColumnType>>({
+    updateColumn: builder.mutation<
+      ColumnType,
+      Pick<ColumnType, 'id' | 'title' | 'background'>
+    >({
       query: (data) => {
         const { id, ...body } = data;
-
         return { url: `columns/${id}/`, method: 'PATCH', body };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Columns', id: arg.id },
-      ],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        const board = boardSlice.getInitialState().currentBoard;
+
+        const patchResult = dispatch(
+          boardApi.util.updateQueryData('getFullBoard', board, (draft) => {
+            const column = draft.columns.find((col) => col.id === args.id);
+            if (column) Object.assign(column, args);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
     }),
     deleteColumn: builder.mutation<void, string>({
       query: (id) => {
@@ -44,9 +58,3 @@ export const {
   useAddColumnMutation,
   useDeleteColumnMutation,
 } = columnApi;
-
-export const selectColumnById = (id: string) =>
-  createSelector(
-    columnApi.endpoints.getColumn.select(id),
-    (column) => column.data
-  );

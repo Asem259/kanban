@@ -1,8 +1,8 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 
-import { AddNewItem } from '../components/AddNewItem/AddNewItem';
-import { BoardTile } from '../components/BoardTile';
+import { AddNewItem } from '../components/AddNewItem';
+import { BoardTile } from '../components/Board/BoardTile';
 import { boardsContainer } from '../app/styles/boardStyle';
 import { useAppSelector } from '../app/store/hooks';
 import { selectAllBoards, useGetBoardsQuery } from '../app/services/boardApi';

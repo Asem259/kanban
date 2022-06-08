@@ -1,16 +1,18 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { boardTileStyle, boardTileLinkStyle } from '../app/styles/boardStyle';
+import {
+  boardTileStyle,
+  boardTileLinkStyle,
+} from '../../app/styles/boardStyle';
 
-import { FavoriteButton } from './FavoriteButton';
-import { useAppDispatch, useAppSelector } from '../app/store/hooks';
-import { selectBoardById } from '../app/services/boardApi';
-import { OptionsMenu } from './Dialogs/OptionsMenu';
-import { setCurrentBoard } from '../app/store/boardSlice';
+import { FavoriteButton } from '.././FavoriteButton';
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
+import { selectBoardById } from '../../app/services/boardApi';
+import { OptionsMenu } from '.././Dialogs/OptionsMenu';
+import { setCurrentBoard } from '../../app/store/boardSlice';
 
 interface Props {
   id: string;
