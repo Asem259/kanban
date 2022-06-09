@@ -1,12 +1,14 @@
 import uuid
 from rest_framework import viewsets
 
-from .models import Board, Column, Card
+from .models import Board, Column, Card, Task, Label
 from .serializers import (
     BoardSerializer,
     BoardFullSerializer,
     CardSerializer,
     ColumnSerializer,
+    TaskSerializer,
+    LabelSerializer,
 )
 
 
@@ -43,3 +45,19 @@ class CardViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Card.objects.filter(column__board__owner=user.id)
+
+    def create(self, request, pk=None, *args, **kwargs):
+        column = self.request.data.get("column")
+        order = Card.objects.filter(column=column).count() + 1
+        self.request.data["order"] = order
+        return super().create(request, *args, **kwargs)
+
+
+class TaskViewSet(viewsets.ModelViewSet):
+    serializer_class = TaskSerializer
+    queryset = Task.objects.all()
+
+
+class LabelViewSet(viewsets.ModelViewSet):
+    serializer_class = LabelSerializer
+    queryset = Label.objects.all()

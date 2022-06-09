@@ -15,7 +15,7 @@ class Board(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["created_at"]
 
     def __str__(self):
         return self.title
@@ -50,6 +50,14 @@ class Card(models.Model):
 
     class Meta:
         ordering = ["order"]
+
+    @property
+    def total_tasks(self):
+        return self.task_set.count()
+
+    @property
+    def completed_tasks(self):
+        return self.task_set.filter(completed=True).count()
 
     def __str__(self):
         return self.title
