@@ -8,7 +8,7 @@ export const cardContainer = {
   marginTop: '12px',
   p: '12px',
   gap: '12px',
-  backgroundColor: '#F4F4F4',
+  backgroundColor: '#fff',
   borderRadius: theme.shape.borderRadius,
   alignItems: 'flex-start',
 };
@@ -35,9 +35,9 @@ export const tasksProgressContainer = {
 
 export const addNewCardStyle = {
   ...addNewItem,
-  minWidth: '280px',
+  minWidth: '320px',
   borderRadius: theme.shape.borderRadius,
-  height: '120px',
+  height: '84px',
   marginTop: '12px',
 };
 

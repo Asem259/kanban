@@ -41,7 +41,7 @@ export const CardContent = ({ cardId }: Props) => {
       gridTemplateColumns='repeat(12, 1fr)'
       alignContent='flex-start'
       gap={2}
-      px={matches ? 2 : 4}
+      pr={2}
       sx={(theme) => ({
         height: '100%',
       })}

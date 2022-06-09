@@ -24,10 +24,10 @@ export const SideBar = ({ cardId }: Props) => {
       gridTemplateColumns='repeat(12, 1fr)'
       alignContent='flex-start'
       gap={2}
-      px={2}
-      pt={1}
+      pl={2}
       sx={(theme) => ({
         height: '100%',
+        borderLeft: '1px solid ' + theme.palette.grey['300'],
         [theme.breakpoints.down('sm')]: {
           display: 'none',
         },

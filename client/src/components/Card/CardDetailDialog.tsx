@@ -19,13 +19,14 @@ import {
 import { CardContent } from './CardContent';
 import { SideBar } from './CardSidBar';
 import { EditCardContentForm } from './EditCardContentForm';
+import Divider from '@mui/material/Divider';
 
 export const CardDetailDialog = () => {
   const { cardId } = useParams();
   const card = useAppSelector(selectCardById(cardId as string));
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(card?.title || '');
+  const [title, setTitle] = useState<string>(card?.title as string);
   const navigate = useNavigate();
 
   const currentBoard = useAppSelector((state) => state.board.currentBoard);
@@ -44,7 +45,7 @@ export const CardDetailDialog = () => {
       fullWidth
       maxWidth='md'
     >
-      <Grid container>
+      <Grid container px={matches ? 2 : 4}>
         <Grid item xs={12} sx={{ height: '32px', position: 'relative' }}>
           <IconButton
             sx={(theme) => ({ ...dialogCloseBtnStyle })}
@@ -53,22 +54,17 @@ export const CardDetailDialog = () => {
             <CloseIcon fontSize='small' />
           </IconButton>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          pr={matches ? 2 : showForm ? 2 : 4}
-          pl={matches ? 2 : showForm ? 4 : 0}
-          mt={2}
-          mb={4}
-        >
+        <Grid item xs={12} mt={2} mb={2}>
           {!showForm ? (
-            <Typography
-              sx={{ fontWeight: '700', fontSize: '24px' }}
-              pl={matches ? 0 : 4}
-              onClick={() => setShowForm(true)}
-            >
-              {card?.title}
-            </Typography>
+            <>
+              <Typography
+                sx={{ fontWeight: '700', fontSize: '24px' }}
+                onClick={() => setShowForm(true)}
+              >
+                {card?.title}
+              </Typography>
+              <Divider flexItem sx={{ mt: 2 }} />
+            </>
           ) : (
             <EditCardContentForm
               setShowForm={setShowForm}
@@ -78,10 +74,11 @@ export const CardDetailDialog = () => {
             />
           )}
         </Grid>
-
+        <Grid item xs={12} sm={8}></Grid>
         <Grid item xs={12} sm={8}>
           <CardContent cardId={card?.id as string} />
         </Grid>
+
         <Grid item xs={0} sm={4}>
           <SideBar cardId={card?.id as string} />
         </Grid>

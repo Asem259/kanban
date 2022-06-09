@@ -2,9 +2,11 @@ import { addNewItem } from './styles';
 import { theme } from './theme';
 
 export const columnContainer = {
-  width: '280px',
+  width: '360px',
   minHeight: '40px',
+  height: 'fit-content',
   flexGrow: 0,
+  borderRadius: theme.shape.borderRadius,
 };
 
 export const columnHeader = {
@@ -24,5 +26,5 @@ export const addNewColumnStyle = {
   borderRadius: theme.shape.borderRadius,
   px: '16px',
   height: '48px',
-  minWidth: '280px',
+  minWidth: '300px',
 };

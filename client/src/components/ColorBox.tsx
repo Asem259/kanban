@@ -8,12 +8,17 @@ import { colorButtonStyle, colorsContainer } from '../app/styles/styles';
 import { useAppSelector } from '../app/store/hooks';
 import { selectAction } from '../app/store/boardSlice';
 
-interface Props {
-  setColor: Dispatch<SetStateAction<string>>;
-  color: string;
-}
-
-const columnBg = [
+const tagsBg = [
+  '#f06292',
+  '#ba68c8',
+  '#7986cb',
+  '#ffeb3b',
+  '#2e7d32',
+  '#ff5722',
+  '#757575',
+  '#8d6e63',
+];
+const columnsBg = [
   '#f06292',
   '#9575cd',
   '#3f51b5',
@@ -23,21 +28,17 @@ const columnBg = [
   '#ffee58',
   '#ff7043',
 ];
-const labelBg = [
-  '#ff5252',
-  '#ba68c8',
-  '#7986cb',
-  '#64b5f6',
-  '#26a69a',
-  '#a1887f',
-  '#ef6c00',
-  '#689f3',
-];
+
+interface Props {
+  setColor: Dispatch<SetStateAction<string>>;
+  color: string;
+}
 
 export const ColorBox = ({ setColor, color }: Props) => {
   const { entity } = useAppSelector(selectAction);
 
-  const bgs = entity === 'Column' ? columnBg : labelBg;
+  const bgs = entity === 'Column' ? columnsBg : tagsBg;
+
   return (
     <Stack direction='row' sx={{ ...colorsContainer }}>
       {bgs.map((bg, i) => (

@@ -41,7 +41,7 @@ export const EditCardContentForm = ({
         <TextField
           inputProps={{
             style: {
-              fontSize: title ? '24px' : '16px',
+              fontSize: title ? '22px' : '16px',
               fontWeight: title ? '700' : '400',
             },
           }}

@@ -35,7 +35,7 @@ export const AddNewCardForm = ({ columnId, setShowForm }: Props) => {
         display='flex'
         mt={4}
         flexDirection='column'
-        sx={{ width: '280px' }}
+        sx={{ width: '320px' }}
         alignItems='center'
         gap={1}
       >
