@@ -12,7 +12,6 @@ import { useAppSelector } from '../app/store/hooks';
 export const BoardView = ({}) => {
   const { boardId } = useParams();
   const { data } = useGetFullBoardQuery(boardId as string);
-  console.log(data);
 
   const cols = useAppSelector(selectColumns(boardId as string));
 

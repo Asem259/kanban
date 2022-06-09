@@ -2,30 +2,29 @@ import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-import { selectCardById } from '../../app/services/cardApi';
+import { selectCardById } from '../../app/services/boardApi';
 import { useAppSelector } from '../../app/store/hooks';
-import { dialogTextField } from '../../app/styles/dialogStyle';
 import { LabelMenu } from '../Label/LabelMenu';
 import { ProgressBar } from './ProgressBar';
 import { Task } from './Task';
 import { EditCardContentForm } from './EditCardContentForm';
 import { AddNewTaskMenu } from './AddNewTaskMenu';
+import { selectCurrentBoard } from '../../app/store/boardSlice';
 
 interface Props {
   cardId: string;
 }
 
 export const CardContent = ({ cardId }: Props) => {
-  const card = useAppSelector(selectCardById(cardId));
+  const currentBoard = useAppSelector(selectCurrentBoard);
+  const card = useAppSelector(selectCardById(currentBoard, cardId));
+
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>(
-    card?.description || ''
-  );
+
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -52,27 +51,18 @@ export const CardContent = ({ cardId }: Props) => {
         sx={{ height: 'fit-content' }}
         flexDirection='column'
         gap={1}
+        onClick={() => setShowForm(true)}
       >
         <Typography variant='h6' fontWeight='600'>
           Description
         </Typography>
-        {!description ? (
-          <TextField
-            fullWidth
-            multiline
-            minRows={5}
-            placeholder='Enter Description ...'
-            sx={(theme) => dialogTextField}
-          />
-        ) : !showForm ? (
-          <Typography onClick={() => setShowForm(true)}>
-            {description}
-          </Typography>
+        {!showForm ? (
+          <Typography>{card?.description || '\n'}</Typography>
         ) : (
           <EditCardContentForm
-            value={description}
-            setValue={setDescription}
             multiLine
+            field='description'
+            id={cardId}
             setShowForm={setShowForm}
           />
         )}

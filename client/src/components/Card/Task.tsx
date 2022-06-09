@@ -33,11 +33,7 @@ export const Task = ({ id, completed, description }: TaskType) => {
     <Box display='flex' sx={{ width: '100%' }} alignItems='center' gap={3}>
       <Checkbox checked={complete} onChange={() => setComplete(!complete)} />
       {showForm ? (
-        <EditCardContentForm
-          value={desc}
-          setValue={setDesc}
-          setShowForm={setShowForm}
-        />
+        <EditCardContentForm id={id} field='task' setShowForm={setShowForm} />
       ) : (
         <Typography
           onClick={handleEdit}

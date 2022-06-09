@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 import { useAppSelector } from '../../app/store/hooks';
-import { selectCardById } from '../../app/services/cardApi';
+import { selectCardById } from '../../app/services/boardApi';
 
 import {
   cardDialogStyle,
@@ -23,13 +23,14 @@ import Divider from '@mui/material/Divider';
 
 export const CardDetailDialog = () => {
   const { cardId } = useParams();
-  const card = useAppSelector(selectCardById(cardId as string));
-
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(card?.title as string);
-  const navigate = useNavigate();
 
   const currentBoard = useAppSelector((state) => state.board.currentBoard);
+  const card = useAppSelector(selectCardById(currentBoard, cardId as string));
+
+  const [showForm, setShowForm] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
   const handleClose = () => {
     navigate('/b/' + currentBoard);
   };
@@ -68,9 +69,9 @@ export const CardDetailDialog = () => {
           ) : (
             <EditCardContentForm
               setShowForm={setShowForm}
-              value={title}
-              setValue={setTitle}
-              title
+              id={cardId as string}
+              field='title'
+              titleStyle
             />
           )}
         </Grid>

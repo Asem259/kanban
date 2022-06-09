@@ -13,10 +13,11 @@ import { darken } from '@mui/material';
 import { useAppSelector } from '../../app/store/hooks';
 import { labelButtonStyle } from '../../app/styles/dialogStyle';
 import { selectLabels } from '../../app/services/boardApi';
-import { selectCardById } from '../../app/services/cardApi';
+import { selectCardById } from '../../app/services/boardApi';
 
 import { labelMenuItem } from '../../app/styles/cardStyle';
 import { buttonStyle } from '../../app/styles/styles';
+import { useUpdateCardMutation } from '../../app/services/cardApi';
 
 interface Props {
   cardId: string;
@@ -31,13 +32,15 @@ export const SelectLabelMenu = ({
   setSelectedLabel,
 }: Props) => {
   const currentBoard = useAppSelector((state) => state.board.currentBoard);
+
+  const [updateCard] = useUpdateCardMutation();
   const labels = useAppSelector(selectLabels(currentBoard));
-  const cardLabels = useAppSelector(selectCardById(cardId))?.labels.map(
-    (label) => label.id
-  );
+  const cardLabels = useAppSelector(
+    selectCardById(currentBoard, cardId)
+  )?.labels.map((label) => label.id);
 
   const handleSelectLabels = (id: string) => () => {
-    // updateCard(card,label)
+    updateCard({ id: cardId, labelId: id });
   };
   const handleEditLabel = (id: string) => () => {
     setView('Edit');

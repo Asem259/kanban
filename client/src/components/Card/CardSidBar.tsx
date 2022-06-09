@@ -1,5 +1,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { useDeleteCardMutation } from '../../app/services/cardApi';
+import { setAction } from '../../app/store/boardSlice';
 
 import { useAppDispatch } from '../../app/store/hooks';
 import { buttonStyle } from '../../app/styles/styles';
@@ -11,8 +13,9 @@ interface Props {
 }
 
 export const SideBar = ({ cardId }: Props) => {
+  const dispatch = useAppDispatch();
   const handleDelete = () => {
-    // deleteCard(cardId)
+    dispatch(setAction({ id: cardId, action: 'Delete', entity: 'Card' }));
   };
   const handleAddTask = () => {
     // addTask(taskDAta)

@@ -16,22 +16,52 @@ import { selectCurrentBoard } from '../../app/store/boardSlice';
 import { selectLabelById } from '../../app/services/boardApi';
 import { labelMenuItem } from '../../app/styles/cardStyle';
 import { ColorBox } from '../ColorBox';
+import {
+  useAddLabelMutation,
+  useDeleteLabelMutation,
+  useUpdateLabelMutation,
+} from '../../app/services/labelApi';
+import { Label } from '../../types/index.ts';
 
 interface Props {
   id: string;
   view: string;
   setView: (view: 'Create' | 'Edit' | 'Select') => void;
+  cardId: string;
 }
-export const EditLabelMenu = ({ id, view, setView }: Props) => {
-  const [name, setName] = useState<string>('');
-  const [color, setColor] = useState<string>('');
-
+export const EditLabelMenu = ({ id, view, setView, cardId }: Props) => {
   const boardId = useAppSelector(selectCurrentBoard);
-  const label = useAppSelector(selectLabelById(boardId, id));
+  const label =
+    view === 'Edit' ? useAppSelector(selectLabelById(boardId, id)) : null;
 
-  const handleSave = () => {};
+  const [name, setName] = useState<string>(label?.name || '');
+  const [color, setColor] = useState<string>(label?.color || '');
+
+  const [updateLabel] = useUpdateLabelMutation();
+  const [addLabel] = useAddLabelMutation();
+  const [deleteLabel] = useDeleteLabelMutation();
+
+  const handleSave = async () => {
+    let updatedLabel: Partial<Label> = {};
+    if (view === 'Edit' && label) {
+      if (name && name !== label.name) updatedLabel.name = name;
+      if (color && color !== label.color) updatedLabel.color = color;
+      console.log(updatedLabel, color, name);
+
+      await updateLabel({ id, ...updatedLabel });
+    }
+    if (view === 'Create')
+      await addLabel({ name, color, board: boardId, card: cardId });
+
+    setView('Select');
+  };
 
   const handleClose = () => {
+    setView('Select');
+  };
+
+  const handleDelete = async () => {
+    await deleteLabel(id);
     setView('Select');
   };
   return (
@@ -81,14 +111,14 @@ export const EditLabelMenu = ({ id, view, setView }: Props) => {
           fullWidth
           disableElevation
           disableRipple
-          onClick={handleClose}
+          onClick={view === 'Create' ? handleClose : handleDelete}
           size='medium'
           sx={(theme) => ({
             backgroundColor: theme.palette.grey['200'],
             ...buttonStyle,
           })}
         >
-          Cancel
+          {view === 'Create' ? 'Cancel' : 'Delete'}
         </Button>
 
         <Button

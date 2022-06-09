@@ -24,6 +24,10 @@ export interface Label {
   name: string;
   color: string;
 }
+export interface createLabel extends Label {
+  board: string;
+  card: string;
+}
 
 export interface Task {
   id: string;
@@ -41,6 +45,11 @@ export interface Card {
   column: string;
   total_tasks: number;
   completed_tasks: number;
+}
+
+export interface UpdateCardLabelRequest {
+  id: string;
+  labelId: string;
 }
 
 export interface Column {

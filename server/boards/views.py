@@ -52,6 +52,19 @@ class CardViewSet(viewsets.ModelViewSet):
         self.request.data["order"] = order
         return super().create(request, *args, **kwargs)
 
+    def update(self, request, pk, *args, **kwargs):
+        card = Card.objects.get(id=pk)
+        print(self.request.data)
+        if self.request.data.get("labelId"):
+            label_id = self.request.data.get("labelId")
+            label = Label.objects.get(id=label_id)
+
+            if label in card.labels.all():
+                card.labels.remove(label)
+            else:
+                card.labels.add(label)
+        return super().update(request, *args, **kwargs)
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
@@ -61,3 +74,13 @@ class TaskViewSet(viewsets.ModelViewSet):
 class LabelViewSet(viewsets.ModelViewSet):
     serializer_class = LabelSerializer
     queryset = Label.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        board_id = self.request.data.get("board")
+        name = self.request.data.get("name")
+        color = self.request.data.get("color")
+        card_id = self.request.data.get("card")
+        board = Board.objects.get(id=board_id)
+        card = Card.objects.get(id=card_id)
+        newLabel = Label.objects.create(name=name, color=color, board=board)
+        card.labels.add(newLabel)

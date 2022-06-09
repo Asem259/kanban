@@ -11,15 +11,18 @@ import {
   tagsContainer,
   tasksProgressContainer,
 } from '../../app/styles/cardStyle';
-import { useGetCardQuery } from '../../app/services/cardApi';
+
 import { useAppSelector } from '../../app/store/hooks';
+import { selectCardById } from '../../app/services/boardApi';
+import { selectCurrentBoard } from '../../app/store/boardSlice';
 
 interface Props {
   id: string;
 }
 
 export const Card = ({ id }: Props) => {
-  const { data } = useGetCardQuery(id);
+  const currentBoard = useAppSelector(selectCurrentBoard);
+  const data = useAppSelector(selectCardById(currentBoard, id));
 
   const navigate = useNavigate();
   const tasksCount = data?.tasks.length ?? 0;

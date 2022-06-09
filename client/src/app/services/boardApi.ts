@@ -105,10 +105,15 @@ export const selectColumnById = (boardId: string, colId: string) =>
     columns?.find((col) => col.id === colId)
   );
 
+export const selectCardById = (boardId: string, cardId: string) =>
+  createSelector(boardApi.endpoints.getFullBoard.select(boardId), (result) =>
+    result.data?.cards.find((card) => card.id === cardId)
+  );
+
 export const selectLabels = (id: string) =>
   createSelector(selectFullBoard(id), (data) => data?.labels);
 
 export const selectLabelById = (boardId: string, labelId: string) =>
-  createSelector(selectLabels(boardId), (labels) =>
-    labels?.find((label) => label.id === labelId)
+  createSelector(selectFullBoard(boardId), (data) =>
+    data?.labels.find((label) => label.id === labelId)
   );

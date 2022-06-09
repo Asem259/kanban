@@ -29,9 +29,9 @@ export const LabelMenu = ({ cardId, icon }: Props) => {
               borderRadius: '0',
               p: '8px',
             }}
-            onClick={(e: MouseEvent<HTMLButtonElement>) =>
-              setAnchorEl(e.currentTarget)
-            }
+            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+              setAnchorEl(e.currentTarget);
+            }}
           >
             <AddBoxOutlinedIcon fontSize='large' />
           </IconButton>
@@ -59,7 +59,10 @@ export const LabelMenu = ({ cardId, icon }: Props) => {
       </Box>
       <Menu
         open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
+        onClose={() => {
+          setAnchorEl(null);
+          setView('Select');
+        }}
         sx={(theme) => ({ ...OptionsMenuStyle })}
         elevation={6}
         anchorEl={anchorEl}
@@ -72,7 +75,12 @@ export const LabelMenu = ({ cardId, icon }: Props) => {
             setView={setView}
           />
         ) : (
-          <EditLabelMenu id={selectedLabel} view={view} setView={setView} />
+          <EditLabelMenu
+            id={selectedLabel}
+            view={view}
+            setView={setView}
+            cardId={cardId}
+          />
         )}
       </Menu>
     </>

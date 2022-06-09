@@ -9,7 +9,11 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
-import { selectAction, setAction } from '../../app/store/boardSlice';
+import {
+  selectAction,
+  selectCurrentBoard,
+  setAction,
+} from '../../app/store/boardSlice';
 import { useDeleteBoardMutation } from '../../app/services/boardApi';
 import {
   dialogCloseBtnStyle,
@@ -18,18 +22,26 @@ import {
 } from '../../app/styles/dialogStyle';
 import { buttonStyle } from '../../app/styles/styles';
 import { useDeleteColumnMutation } from '../../app/services/columnApi';
+import { useDeleteCardMutation } from '../../app/services/cardApi';
+import { useNavigate } from 'react-router-dom';
 
 export const DeleteDialog = () => {
   const [deleteBoard] = useDeleteBoardMutation();
   const [deleteColumn] = useDeleteColumnMutation();
+  const [deleteCard] = useDeleteCardMutation();
 
   const dispatch = useAppDispatch();
   const { action, id, title, entity } = useAppSelector(selectAction);
+  const currentBoard = useAppSelector(selectCurrentBoard);
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     if (entity === 'Board') await deleteBoard(id);
     if (entity === 'Column') await deleteColumn(id);
-
+    if (entity === 'Card') {
+      await deleteCard(id);
+      navigate('/b/' + currentBoard);
+    }
     dispatch(setAction(null));
   };
 

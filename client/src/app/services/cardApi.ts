@@ -1,6 +1,7 @@
 import { apiSlice } from './api';
-import { Card as CardType } from '../../types/index.ts';
-import { createSelector } from '@reduxjs/toolkit';
+import { Card as CardType, UpdateCardLabelRequest } from '../../types/index.ts';
+import { boardSlice } from '../store/boardSlice';
+import { boardApi } from './boardApi';
 
 export const cardApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,12 +16,33 @@ export const cardApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: 'LIST' }],
     }),
-    updateCard: builder.mutation<CardType, Partial<CardType>>({
+    updateCard: builder.mutation<
+      CardType,
+      Partial<CardType> | UpdateCardLabelRequest
+    >({
       query: (data) => {
         const { id, ...body } = data;
-        return { url: `cards/${id}/`, method: 'PATCH', body };
+        return {
+          url: `cards/${id}/`,
+          method: 'PATCH',
+          body,
+        };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.id }],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        const boardId = boardSlice.getInitialState().currentBoard;
+        try {
+          const { data: updatedCard } = await queryFulfilled;
+          console.log(updatedCard);
+
+          const patchResult = dispatch(
+            boardApi.util.updateQueryData('getFullBoard', boardId, (draft) => {
+              const card = draft.cards.find((card) => card.id === args.id);
+
+              Object.assign(card as CardType, updatedCard);
+            })
+          );
+        } catch {}
+      },
     }),
 
     deleteCard: builder.mutation<void, string>({
@@ -36,6 +58,3 @@ export const {
   useDeleteCardMutation,
   useUpdateCardMutation,
 } = cardApi;
-
-export const selectCardById = (id: string) =>
-  createSelector(cardApi.endpoints.getCard.select(id), (card) => card.data);

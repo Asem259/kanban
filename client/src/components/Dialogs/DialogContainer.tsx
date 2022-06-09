@@ -5,8 +5,9 @@ import { DeleteDialog } from './DeleteDialog';
 
 export const DialogContainer = () => {
   const { action, entity } = useAppSelector(selectAction);
+
   if (!action) return null;
-  if (entity === 'Column' || entity === 'Board')
+  if (entity && ['Board', 'Column', 'Card'].includes(entity))
     return action === 'Delete' ? <DeleteDialog /> : <ActionDialog />;
 
   return null;
