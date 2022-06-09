@@ -6,12 +6,11 @@ export const cardContainer = {
   flexDirection: 'column',
   width: '100%',
   marginTop: '12px',
-  py: '16px',
-  px: '24px',
-  backgroundColor: theme.palette.grey['100'],
+  p: '12px',
+  gap: '12px',
+  backgroundColor: '#F4F4F4',
   borderRadius: theme.shape.borderRadius,
   alignItems: 'flex-start',
-  gap: '12px',
 };
 export const tagsContainer = {
   width: '100%',
@@ -36,7 +35,7 @@ export const tasksProgressContainer = {
 
 export const addNewCardStyle = {
   ...addNewItem,
-  width: '300px',
+  minWidth: '280px',
   borderRadius: theme.shape.borderRadius,
   height: '120px',
   marginTop: '12px',

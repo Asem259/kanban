@@ -84,7 +84,7 @@ export const LabelDialog = () => {
       <DialogActions>
         <Box sx={dialogActionsContainerStyle}>
           <Button
-            sx={buttonStyle}
+            sx={(theme) => buttonStyle}
             disableElevation
             disableRipple
             variant='contained'

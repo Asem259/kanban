@@ -1,7 +1,8 @@
-import { ChangeEvent, forwardRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import TextField from '@mui/material/TextField';
 
 import { buttonStyle } from '../app/styles/styles';
@@ -9,25 +10,32 @@ import { useAddCardMutation } from '../app/services/cardApi';
 
 interface Props {
   columnId: string;
+  setShowForm: (show: boolean) => void;
 }
 
-export const AddNewCardForm = forwardRef<HTMLElement, Props>(
-  ({ columnId }, ref) => {
-    const [value, setValue] = useState<string>('');
+export const AddNewCardForm = ({ columnId, setShowForm }: Props) => {
+  const [value, setValue] = useState<string>('');
 
-    const [addCard] = useAddCardMutation();
+  const [addCard] = useAddCardMutation();
 
-    const handleSave = () => {
-      addCard({ title: value, column: columnId });
-    };
+  const handleSave = () => {
+    addCard({ title: value, column: columnId });
+    setValue('');
+    setShowForm(false);
+  };
 
-    return (
+  const handleKeyboard = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleSave();
+    if (e.key === 'Escape') setShowForm(false);
+  };
+
+  return (
+    <ClickAwayListener onClickAway={() => setShowForm(false)}>
       <Box
-        ref={ref}
         display='flex'
         mt={4}
         flexDirection='column'
-        sx={{ width: '100%' }}
+        sx={{ width: '280px' }}
         alignItems='center'
         gap={1}
       >
@@ -40,6 +48,7 @@ export const AddNewCardForm = forwardRef<HTMLElement, Props>(
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue(e.target.value)
           }
+          onKeyDown={handleKeyboard}
         />
         <Button
           disableElevation
@@ -53,6 +62,6 @@ export const AddNewCardForm = forwardRef<HTMLElement, Props>(
           Add
         </Button>
       </Box>
-    );
-  }
-);
+    </ClickAwayListener>
+  );
+};

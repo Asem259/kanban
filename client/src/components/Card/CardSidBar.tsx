@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import { useAppDispatch } from '../../app/store/hooks';
 import { buttonStyle } from '../../app/styles/styles';
 import { LabelMenu } from '../Label/LabelMenu';
+import { AddNewTaskMenu } from './AddNewTaskMenu';
 
 interface Props {
   cardId: string;
@@ -24,7 +25,7 @@ export const SideBar = ({ cardId }: Props) => {
       alignContent='flex-start'
       gap={2}
       px={2}
-      pt={6}
+      pt={1}
       sx={(theme) => ({
         height: '100%',
         [theme.breakpoints.down('sm')]: {
@@ -36,22 +37,7 @@ export const SideBar = ({ cardId }: Props) => {
         <LabelMenu cardId={cardId} />
       </Box>
       <Box gridColumn='span 12'>
-        <Button
-          variant='contained'
-          fullWidth
-          disableElevation
-          disableRipple
-          onClick={handleAddTask}
-          sx={(theme) => ({
-            backgroundColor: theme.palette.grey['200'],
-            color: theme.palette.text.primary,
-            '&:hover': {
-              backgroundColor: theme.palette.grey['400'],
-            },
-          })}
-        >
-          Add new Task
-        </Button>
+        <AddNewTaskMenu cardId={cardId} large />
       </Box>
       <Box gridColumn='span 12'>
         <Button

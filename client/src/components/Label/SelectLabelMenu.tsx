@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-
 import { darken } from '@mui/material';
 
 import { useAppSelector } from '../../app/store/hooks';
@@ -56,7 +55,6 @@ export const SelectLabelMenu = ({
           key={label.id}
           sx={(theme) => ({
             ...labelMenuItem,
-            borderRadius: '4px',
           })}
         >
           <ListItemButton
@@ -64,8 +62,9 @@ export const SelectLabelMenu = ({
             alignItems='center'
             sx={(theme) => ({
               ...labelButtonStyle,
+
               backgroundColor: label.color,
-              borderRadius: '4px',
+
               '&:hover': {
                 backgroundColor: label.color,
                 boxShadow: ` 0px 0px 0px 0px black, -8px 0px 0px 0px ${darken(
@@ -93,6 +92,13 @@ export const SelectLabelMenu = ({
             disableGutters
             sx={(theme) => ({
               px: '8px',
+
+              backgroundColor: label.color,
+              ...buttonStyle,
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: darken(label.color, 0.3),
+              },
             })}
           >
             <EditIcon fontSize='small' />

@@ -39,6 +39,8 @@ export interface Card {
   labels: Label[];
   tasks: Task[];
   column: string;
+  total_tasks: number;
+  completed_tasks: number;
 }
 
 export interface Column {
@@ -59,6 +61,7 @@ export interface Board {
 export interface FullBoard extends Board {
   columns: Column[];
   labels: Label[];
+  cards: Card[];
 }
 
 export type Entity = 'Board' | 'Column' | 'Card' | 'Label';

@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
-import { OptionsMenuStyle } from '../../app/styles/styles';
+import { buttonStyle, OptionsMenuStyle } from '../../app/styles/styles';
 import { EditLabelMenu } from './EditLabelMenu';
 import { SelectLabelMenu } from './SelectLabelMenu';
 
@@ -42,6 +42,7 @@ export const LabelMenu = ({ cardId, icon }: Props) => {
             disableElevation
             disableRipple
             sx={(theme) => ({
+              ...buttonStyle,
               backgroundColor: theme.palette.grey['200'],
               color: theme.palette.text.primary,
               '&:hover': {

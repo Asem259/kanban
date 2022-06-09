@@ -32,8 +32,14 @@ export const boardApi = apiSlice.injectEndpoints({
                 type: 'Labels' as const,
                 id: label.id,
               })),
+              ...result.cards.map((card) => ({
+                type: 'Cards' as const,
+                id: card.id,
+              })),
+
               { type: 'Columns', id: 'LIST' },
               { type: 'Labels', id: 'LIST' },
+              { type: 'Cards', id: 'LIST' },
             ]
           : [
               { type: 'Columns', id: 'LIST' },

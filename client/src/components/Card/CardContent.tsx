@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
@@ -11,6 +13,8 @@ import { dialogTextField } from '../../app/styles/dialogStyle';
 import { LabelMenu } from '../Label/LabelMenu';
 import { ProgressBar } from './ProgressBar';
 import { Task } from './Task';
+import { EditCardContentForm } from './EditCardContentForm';
+import { AddNewTaskMenu } from './AddNewTaskMenu';
 
 interface Props {
   cardId: string;
@@ -18,14 +22,18 @@ interface Props {
 
 export const CardContent = ({ cardId }: Props) => {
   const card = useAppSelector(selectCardById(cardId));
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [description, setDescription] = useState<string>(
+    card?.description || ''
+  );
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // const progressValue = card?.tasks.length
-  //   ? Math.round(
-  //       card.tasks.filter((task) => task.completed).length / card.tasks.length
-  //     )
-  //   : 0;
+  let progressValue = 0;
+  if (card && card.total_tasks > 0)
+    progressValue = Math.round(
+      (card?.completed_tasks / card?.total_tasks) * 100
+    );
 
   return (
     <Box
@@ -33,31 +41,43 @@ export const CardContent = ({ cardId }: Props) => {
       gridTemplateColumns='repeat(12, 1fr)'
       alignContent='flex-start'
       gap={2}
-      px={4}
+      px={matches ? 2 : 4}
       sx={(theme) => ({
         height: '100%',
-        [theme.breakpoints.down('sm')]: {
-          px: '8px',
-        },
       })}
     >
-      <Box gridColumn='span 12'>
-        <Typography fontWeight={700} variant='h6'>
-          {card?.title}
-        </Typography>
-      </Box>
-      <Box gridColumn='span 12' display='flex' flexDirection='column' gap={1}>
+      <Box
+        gridColumn='span 12'
+        display='flex'
+        sx={{ height: 'fit-content' }}
+        flexDirection='column'
+        gap={1}
+      >
         <Typography variant='h6' fontWeight='600'>
           Description
         </Typography>
-        <TextField
-          fullWidth
-          multiline
-          minRows={5}
-          placeholder='Enter Description ...'
-          sx={(theme) => dialogTextField}
-        />
+        {!description ? (
+          <TextField
+            fullWidth
+            multiline
+            minRows={5}
+            placeholder='Enter Description ...'
+            sx={(theme) => dialogTextField}
+          />
+        ) : !showForm ? (
+          <Typography onClick={() => setShowForm(true)}>
+            {description}
+          </Typography>
+        ) : (
+          <EditCardContentForm
+            value={description}
+            setValue={setDescription}
+            multiLine
+            setShowForm={setShowForm}
+          />
+        )}
       </Box>
+
       <Box
         gridColumn='span 12'
         py={1}
@@ -75,12 +95,17 @@ export const CardContent = ({ cardId }: Props) => {
         ))}
         {matches && <LabelMenu cardId={cardId} icon />}
       </Box>
+
       <Box gridColumn='span 12' py={1}>
-        <Typography variant='h6' fontWeight='600'>
-          Tasks
-        </Typography>
+        <Box display='flex' justifyContent='space-between'>
+          <Typography variant='h6' fontWeight='600'>
+            Tasks
+          </Typography>
+          {matches && <AddNewTaskMenu cardId={card?.id as string} />}
+        </Box>
+
         <Box sx={{ width: '100%' }} my={2}>
-          <ProgressBar value={40} />
+          <ProgressBar value={progressValue} />
         </Box>
         <Box
           sx={{ width: '100%' }}

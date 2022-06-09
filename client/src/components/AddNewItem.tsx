@@ -1,5 +1,4 @@
 import Button from '@mui/material/Button';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 import { addNewBoardStyle } from '../app/styles/boardStyle';
 import { addNewCardStyle } from '../app/styles/cardStyle';
@@ -45,8 +44,6 @@ export const AddNewItem = ({ entity, columnId }: Props) => {
       {buttonText}
     </Button>
   ) : (
-    <ClickAwayListener onClickAway={() => setShowForm(false)}>
-      <AddNewCardForm columnId={columnId as string} />
-    </ClickAwayListener>
+    <AddNewCardForm columnId={columnId as string} setShowForm={setShowForm} />
   );
 };
