@@ -54,11 +54,9 @@ class CardViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk, *args, **kwargs):
         card = Card.objects.get(id=pk)
-        print(self.request.data)
         if self.request.data.get("labelId"):
             label_id = self.request.data.get("labelId")
             label = Label.objects.get(id=label_id)
-
             if label in card.labels.all():
                 card.labels.remove(label)
             else:
@@ -69,6 +67,13 @@ class CardViewSet(viewsets.ModelViewSet):
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        cardId = self.request.data.get("card")
+        card = Card.objects.get(id=cardId)
+        order = card.task_set.count() + 1
+        self.request.data["order"] = order
+        return super().create(request, *args, **kwargs)
 
 
 class LabelViewSet(viewsets.ModelViewSet):

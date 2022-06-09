@@ -7,6 +7,7 @@ import Menu from '@mui/material/Menu';
 import { buttonStyle, OptionsMenuStyle } from '../../app/styles/styles';
 import TextField from '@mui/material/TextField';
 import { dialogActionsContainerStyle } from '../../app/styles/dialogStyle';
+import { useAddTaskMutation } from '../../app/services/cardApi';
 
 interface Props {
   cardId: string;
@@ -17,7 +18,11 @@ export const AddNewTaskMenu = ({ cardId, large }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [value, setValue] = useState<string>('');
 
-  const handleClick = () => {
+  const [addTask] = useAddTaskMutation();
+
+  const handleClick = async () => {
+    await addTask({ card: cardId, description: value });
+    setValue('');
     setAnchorEl(null);
   };
   return (

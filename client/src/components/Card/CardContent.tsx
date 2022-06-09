@@ -62,7 +62,7 @@ export const CardContent = ({ cardId }: Props) => {
           <EditCardContentForm
             multiLine
             field='description'
-            id={cardId}
+            cardId={cardId}
             setShowForm={setShowForm}
           />
         )}
@@ -104,7 +104,7 @@ export const CardContent = ({ cardId }: Props) => {
           flexDirection='column'
         >
           {card?.tasks.map((task) => (
-            <Task key={task.id} {...task} />
+            <Task key={task.id} {...task} card={cardId} />
           ))}
         </Box>
       </Box>

@@ -33,6 +33,7 @@ export interface Task {
   id: string;
   description: string;
   completed: boolean;
+  card: string;
 }
 
 export interface Card {

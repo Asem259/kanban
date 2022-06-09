@@ -69,7 +69,7 @@ export const CardDetailDialog = () => {
           ) : (
             <EditCardContentForm
               setShowForm={setShowForm}
-              id={cardId as string}
+              cardId={cardId as string}
               field='title'
               titleStyle
             />

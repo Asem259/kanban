@@ -8,32 +8,42 @@ import Typography from '@mui/material/Typography';
 
 import { Task as TaskType } from '../../types/index.ts';
 import { EditCardContentForm } from './EditCardContentForm';
+import {
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} from '../../app/services/cardApi';
 
-export const Task = ({ id, completed, description }: TaskType) => {
+export const Task = ({ id, completed, description, card }: TaskType) => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [complete, setComplete] = useState<boolean>(completed);
   const [desc, setDesc] = useState<string>(description);
 
-  const handleDelete = () => {
-    //deleteTask(id)
+  const [deleteTask] = useDeleteTaskMutation();
+  const [updateTask] = useUpdateTaskMutation();
+
+  const handleDelete = async () => {
+    await deleteTask({ taskId: id, cardId: card });
   };
   const handleEdit = () => {
     setShowForm(true);
   };
 
-  const handleSave = () => {
-    //updateTask({description:desc})
-    setShowForm(false);
-  };
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
-    //updateTask({id,completed:e.target.checked})
+    setComplete(!complete);
+
+    updateTask({ id, completed: e.target.checked, card: card });
   };
 
   return (
     <Box display='flex' sx={{ width: '100%' }} alignItems='center' gap={3}>
-      <Checkbox checked={complete} onChange={() => setComplete(!complete)} />
+      <Checkbox checked={complete} onChange={handleCheck} />
       {showForm ? (
-        <EditCardContentForm id={id} field='task' setShowForm={setShowForm} />
+        <EditCardContentForm
+          taskId={id}
+          cardId={card}
+          field='task'
+          setShowForm={setShowForm}
+        />
       ) : (
         <Typography
           onClick={handleEdit}

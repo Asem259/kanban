@@ -1,14 +1,18 @@
 import { apiSlice } from './api';
-import { Card as CardType, UpdateCardLabelRequest } from '../../types/index.ts';
+import {
+  Card as CardType,
+  Task,
+  UpdateCardLabelRequest,
+} from '../../types/index.ts';
 import { boardSlice } from '../store/boardSlice';
 import { boardApi } from './boardApi';
 
 export const cardApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getCard: builder.query<CardType, string>({
-      query: (id) => `cards/${id}/`,
-      providesTags: (result, error, arg) => [{ type: 'Cards', id: arg }],
-    }),
+    // getCard: builder.query<CardType, string>({
+    //   query: (id) => `cards/${id}/`,
+    //   providesTags: (result, error, arg) => [{ type: 'Cards', id: arg }],
+    // }),
 
     addCard: builder.mutation<CardType, Partial<CardType>>({
       query: (data) => {
@@ -32,8 +36,6 @@ export const cardApi = apiSlice.injectEndpoints({
         const boardId = boardSlice.getInitialState().currentBoard;
         try {
           const { data: updatedCard } = await queryFulfilled;
-          console.log(updatedCard);
-
           const patchResult = dispatch(
             boardApi.util.updateQueryData('getFullBoard', boardId, (draft) => {
               const card = draft.cards.find((card) => card.id === args.id);
@@ -49,12 +51,40 @@ export const cardApi = apiSlice.injectEndpoints({
       query: (id) => ({ url: `cards/${id}/`, method: 'DELETE' }),
       invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg }],
     }),
+    addTask: builder.mutation<Task, Partial<Task>>({
+      query: (data) => {
+        return { url: `tasks/`, method: 'POST', body: data };
+      },
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Cards', id: arg.card },
+      ],
+    }),
+    updateTask: builder.mutation<Task, Partial<Task>>({
+      query: (data) => {
+        const { id, ...body } = data;
+        return { url: `tasks/${id}/`, method: 'PATCH', body };
+      },
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Cards', id: arg.card },
+      ],
+    }),
+    deleteTask: builder.mutation<void, { taskId: string; cardId: string }>({
+      query: ({ taskId, cardId }) => ({
+        url: `tasks/${taskId}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Cards', id: arg.cardId },
+      ],
+    }),
   }),
 });
 
 export const {
-  useGetCardQuery,
   useAddCardMutation,
   useDeleteCardMutation,
   useUpdateCardMutation,
+  useAddTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
 } = cardApi;

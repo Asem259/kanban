@@ -20,6 +20,7 @@ export const labelApi = apiSlice.injectEndpoints({
         const { id, ...body } = data;
         return { url: `labels/${id}/`, method: 'PATCH', body };
       },
+      invalidatesTags: (result, error, arg) => [{ type: 'Labels', id: arg.id }],
     }),
   }),
 });

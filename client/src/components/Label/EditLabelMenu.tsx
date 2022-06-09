@@ -46,8 +46,6 @@ export const EditLabelMenu = ({ id, view, setView, cardId }: Props) => {
     if (view === 'Edit' && label) {
       if (name && name !== label.name) updatedLabel.name = name;
       if (color && color !== label.color) updatedLabel.color = color;
-      console.log(updatedLabel, color, name);
-
       await updateLabel({ id, ...updatedLabel });
     }
     if (view === 'Create')
