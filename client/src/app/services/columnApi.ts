@@ -49,6 +49,20 @@ export const columnApi = apiSlice.injectEndpoints({
         { type: 'Columns', id: 'LIST' },
       ],
     }),
+    moveColumn: builder.mutation<
+      ColumnType,
+      Pick<ColumnType, 'id' | 'order' | 'board'>
+    >({
+      query: (data) => {
+        const { id, ...body } = data;
+        return {
+          url: `columns/${id}/`,
+          method: 'PATCH',
+          body,
+        };
+      },
+      invalidatesTags: (result, error, arg) => ['Columns'],
+    }),
   }),
 });
 
@@ -57,4 +71,5 @@ export const {
   useUpdateColumnMutation,
   useAddColumnMutation,
   useDeleteColumnMutation,
+  useMoveColumnMutation,
 } = columnApi;

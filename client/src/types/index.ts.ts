@@ -53,6 +53,12 @@ export interface UpdateCardLabelRequest {
   labelId: string;
 }
 
+export interface MoveCardProps {
+  id: string;
+  order?: number;
+  to: string;
+}
+
 export interface Column {
   id: string;
   background: string;
@@ -76,3 +82,20 @@ export interface FullBoard extends Board {
 
 export type Entity = 'Board' | 'Column' | 'Card' | 'Label';
 export type Action = 'Create' | 'Edit' | 'Delete' | null;
+
+export interface ColumnDragItem extends Column {
+  type: 'COLUMN';
+}
+
+export interface CardDragItem extends Card {
+  type: 'CARD';
+}
+
+export type DragItem = ColumnDragItem | CardDragItem;
+
+export interface SetActionPayload {
+  action: Action;
+  entity: Entity;
+  id?: string;
+  title?: string;
+}

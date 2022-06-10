@@ -16,7 +16,7 @@ export const theme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: 2,
+          borderRadius: 3,
           color: '#fff',
         },
       },

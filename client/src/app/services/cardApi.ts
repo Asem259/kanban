@@ -1,6 +1,7 @@
 import { apiSlice } from './api';
 import {
   Card as CardType,
+  MoveCardProps,
   Task,
   UpdateCardLabelRequest,
 } from '../../types/index.ts';
@@ -77,6 +78,14 @@ export const cardApi = apiSlice.injectEndpoints({
         { type: 'Cards', id: arg.cardId },
       ],
     }),
+    moveCard: builder.mutation<CardType, MoveCardProps>({
+      query: (data) => {
+        const { id } = data;
+        const body = { id, column: data.to, order: data.order };
+        return { url: `cards/${id}/`, method: 'PATCH', body };
+      },
+      invalidatesTags: (result, error, arg) => ['Cards', 'Columns'],
+    }),
   }),
 });
 
@@ -87,4 +96,5 @@ export const {
   useAddTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
+  useMoveCardMutation,
 } = cardApi;

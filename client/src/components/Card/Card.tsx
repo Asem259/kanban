@@ -15,12 +15,16 @@ import {
 import { useAppSelector } from '../../app/store/hooks';
 import { selectCardById } from '../../app/services/boardApi';
 import { selectCurrentBoard } from '../../app/store/boardSlice';
+import { Card as CardType } from '../../types/index.ts';
+import { useItemDrag } from '../../hooks/useItemDrag';
+import { useItemDrop } from '../../hooks/useItemDrop';
 
 interface Props {
   id: string;
+  isPreview: boolean;
 }
 
-export const Card = ({ id }: Props) => {
+export const Card = ({ id, isPreview }: Props) => {
   const currentBoard = useAppSelector(selectCurrentBoard);
   const data = useAppSelector(selectCardById(currentBoard, id));
 
@@ -28,8 +32,27 @@ export const Card = ({ id }: Props) => {
   const tasksCount = data?.tasks.length ?? 0;
   const location = useLocation();
 
+  const draggedItem = useAppSelector((state) => state.board.draggedItem);
+
+  const { drag } = useItemDrag({ type: 'CARD', ...(data as CardType) });
+  const { ref, drop } = useItemDrop({
+    type: 'CARD',
+    ...(data as CardType),
+  });
+  drag(drop(ref));
+
   return (
-    <Paper elevation={2}>
+    <Paper
+      component='div'
+      elevation={2}
+      ref={ref}
+      sx={{
+        opacity: draggedItem?.id === id && !isPreview ? 0 : 1,
+
+        transform: isPreview ? 'rotate(5deg)' : 'none',
+        width: '300px',
+      }}
+    >
       <Box
         sx={{ ...cardContainer }}
         onClick={() =>

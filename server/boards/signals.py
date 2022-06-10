@@ -12,7 +12,7 @@ def move_col(sender, instance, **kwargs):
         if old_order != new_order:
             query1 = Q(order__lte=max(new_order, old_order))
             query2 = Q(order__gte=min(new_order, old_order))
-            query3 = Q(board_owner=instance.board_owner)
+            query3 = Q(board=instance.board)
             columns = sender.objects.filter(query1 & query2 & query3).exclude(
                 id=instance.id
             )
@@ -24,7 +24,7 @@ def move_col(sender, instance, **kwargs):
 def del_col(sender, instance, **kwargs):
     order = instance.order
     query1 = Q(order__gt=order)
-    query2 = Q(board_owner=instance.board_owner)
+    query2 = Q(board=instance.board)
     sender.objects.filter(query1 & query2).update(order=F("order") - 1)
 
 

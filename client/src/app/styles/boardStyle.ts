@@ -42,8 +42,9 @@ export const boardViewContainer = {
   width: '100%',
   height: '100%',
   display: 'flex',
+
   justifyContent: 'flex-start',
-  overflow: 'auto',
+  overflowX: 'auto',
   gap: '24px',
   py: '32px',
 };

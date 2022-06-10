@@ -13,13 +13,16 @@ from .serializers import (
 
 
 class BoardViewSet(viewsets.ModelViewSet):
-    queryset = Board.objects.all()
     lookup_field = "id"
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             return BoardFullSerializer
         return BoardSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Board.objects.filter(owner=user)
 
 
 class ColumnViewSet(viewsets.ModelViewSet):

@@ -33,7 +33,7 @@ import {
 import { selectAction, setAction } from '../../app/store/boardSlice';
 
 export const ActionDialog = () => {
-  const [newTitle, setNewTitle] = useState<string | undefined>();
+  const [newTitle, setNewTitle] = useState<string>('');
   const [columnColor, setColumnColor] = useState<string>('');
 
   const dispatch = useAppDispatch();
@@ -121,7 +121,7 @@ export const ActionDialog = () => {
       </DialogContent>
 
       <DialogActions>
-        <Box sx={dialogActionsContainerStyle}>
+        <Box px={2} sx={dialogActionsContainerStyle}>
           <Button
             sx={buttonStyle}
             disableElevation

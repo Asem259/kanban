@@ -11,10 +11,10 @@ import { CardDetailDialog } from './components/Card/CardDetailDialog';
 import { selectAction } from './app/store/boardSlice';
 
 interface PrivatePros {
-  Component: ComponentType;
+  component: ComponentType;
 }
 
-const Private = ({ Component }: PrivatePros) => {
+const Private = ({ component: Component }: PrivatePros) => {
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
   return isAuthenticated ? <Component /> : <Navigate to='/login' />;
@@ -32,16 +32,23 @@ function App() {
       {action && <DialogContainer />}
       {isAuthenticated && <NavBar />}
       <Routes location={locationState?.backgroundLocation || location}>
+        <Route path='/' element={<Private component={Boards} />} />
         <Route path='/login' element={<Login page='login' />} />
         <Route path='/register' element={<Login page='register' />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/Boards' element={<Boards />} />
-        <Route path='/b/:boardId' element={<BoardView />} />
-        <Route path='/c/:cardId' element={<CardDetailPage />} />
+        <Route path='/profile' element={<Private component={Profile} />} />
+        <Route path='/Boards' element={<Private component={Boards} />} />
+        <Route path='/b/:boardId' element={<Private component={BoardView} />} />
+        <Route
+          path='/c/:cardId'
+          element={<Private component={CardDetailPage} />}
+        />
       </Routes>
       {locationState?.backgroundLocation && (
         <Routes>
-          <Route path='/c/:cardId' element={<CardDetailDialog />} />
+          <Route
+            path='/c/:cardId'
+            element={<Private component={CardDetailDialog} />}
+          />
         </Routes>
       )}
     </>

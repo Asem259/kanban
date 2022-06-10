@@ -1,34 +1,28 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DragItem, SetActionPayload } from '../../types/index.ts';
+import { BoardState } from '../../types/stateTypes';
 
-import { Action, Entity } from '../../types/index.ts';
 import { RootState } from './store';
 
-interface InitialState {
-  currentBoard: string;
-  action: Action;
-  id: string;
-  title: string;
-  entity: Entity | null;
-}
-
 const storedCurrentBoard = localStorage.getItem('currentBoard');
-const initialState: InitialState = {
+const initialState: BoardState = {
   currentBoard: storedCurrentBoard || '',
   action: null,
   id: '',
   title: '',
   entity: null,
+  draggedItem: null,
 };
 
 export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    setCurrentBoard: (state, action) => {
+    setCurrentBoard: (state, action: PayloadAction<string>) => {
       state.currentBoard = action.payload;
       localStorage.setItem('currentBoard', action.payload);
     },
-    setAction: (state, action) => {
+    setAction: (state, action: PayloadAction<SetActionPayload | null>) => {
       if (!action.payload) {
         state.action = null;
         state.id = '';
@@ -36,10 +30,13 @@ export const boardSlice = createSlice({
         state.entity = null;
       } else {
         state.action = action.payload.action;
-        state.id = action.payload.id;
-        state.title = action.payload.title;
-        state.entity = action.payload.entity;
+        state.id = action.payload.id || '';
+        state.title = action.payload.title || '';
+        state.entity = action.payload.entity || null;
       }
+    },
+    setDraggedItem: (state, action: PayloadAction<DragItem | null>) => {
+      state.draggedItem = action.payload;
     },
   },
 });
@@ -49,7 +46,8 @@ export const selectAction = createSelector(
   (board) => board
 );
 
-export const { setCurrentBoard, setAction } = boardSlice.actions;
+export const { setCurrentBoard, setAction, setDraggedItem } =
+  boardSlice.actions;
 export const selectCurrentBoard = createSelector(
   (state: RootState) => state.board,
   (board) => board.currentBoard

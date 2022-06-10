@@ -10,8 +10,6 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class LabelSerializer(serializers.ModelSerializer):
-    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
-
     class Meta:
         model = Label
         fields = "__all__"
@@ -21,7 +19,6 @@ class LabelSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     tasks = serializers.SerializerMethodField(read_only=True)
     labels = LabelSerializer(read_only=True, many=True)
-    column = serializers.PrimaryKeyRelatedField(queryset=Column.objects.all())
 
     class Meta:
         model = Card
@@ -36,7 +33,6 @@ class CardSerializer(serializers.ModelSerializer):
             "total_tasks",
             "completed_tasks",
         ]
-        extra_kwargs = {"column": {"write_only": True}}
 
     def get_tasks(self, obj):
         queryset = obj.task_set.all()
