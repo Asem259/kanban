@@ -10,7 +10,7 @@ import { Token, Credentials, User } from '../../types/index.ts';
 import { updateAccessToken, logout } from '../store/userSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://127.0.0.1:8000/api/',
+  baseUrl: process.env.REACT_APP_API_KEY || 'http://127.0.0.1:8000/api/',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).user.accessToken;
     if (token) {
